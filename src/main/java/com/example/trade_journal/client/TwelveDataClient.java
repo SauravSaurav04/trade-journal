@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -16,7 +17,8 @@ public class TwelveDataClient {
     @Qualifier("twelveDataWebClient")
     private WebClient twelveDataWebClient;
 
-    private final String API_KEY = "febb5121dca74bab969fbba598985f8d";
+    @Value("${api.key}")
+    private String API_KEY;
 
     public JsonNode getExchangePrice(String from, String to) {
         return twelveDataWebClient.get()

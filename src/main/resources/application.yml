@@ -3,9 +3,9 @@ spring:
     name: trade-journal
 
   datasource:
-    url: jdbc:postgresql://ep-misty-band-a87iykfw-pooler.eastus2.azure.neon.tech:5432/neondb?sslmode=require
-    username: neondb_owner
-    password: npg_kfvm1Uw9AIto
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=require
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -17,3 +17,6 @@ spring:
   sql:
     init:
       mode: always
+
+api:
+  key: ${MY_API_KEY}
