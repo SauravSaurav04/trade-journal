@@ -1,0 +1,357 @@
+/* ==== GLOBAL STYLES ==== */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f9;
+    color: #1e1e2f;
+}
+
+/* ==== NAVIGATION BAR ==== */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #00a86b;
+    padding: 15px 30px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    color: #fff;
+    font-size: 1.5em;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.nav-right {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links a {
+    color: #e8f5ee;
+    text-decoration: none;
+    font-size: 1em;
+    transition: color 0.2s;
+}
+
+.nav-links a:hover {
+    color: #ffffff;
+}
+
+.auth-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.auth-buttons a {
+    padding: 8px 16px;
+    border: 1px solid #1e1e2f;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.9em;
+    transition: background 0.3s, color 0.3s;
+}
+
+.auth-buttons .login {
+    color: #1e1e2f;
+    background-color: transparent;
+}
+
+.auth-buttons .login:hover {
+    background-color: #1e1e2f;
+    color: #fff;
+}
+
+.auth-buttons .signup {
+    background-color: #1e1e2f;
+    color: #fff;
+}
+
+.auth-buttons .signup:hover {
+    background-color: #151522;
+}
+
+.auth-buttons .profile {
+    background-color: #1e1e2f;
+    color: #fff;
+}
+
+.auth-buttons .profile:hover {
+    background-color: #151522;
+}
+
+/* ==== MODALS ==== */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.modal-content {
+    background-color: #ffffff;
+    margin: auto;
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    color: #00a86b;
+    text-align: center;
+}
+
+.modal-content input {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1em;
+    font-family: inherit;
+}
+
+.modal-content button {
+    width: 100%;
+    max-width: 100%;
+    padding: 12px;
+    background-color: #00a86b;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1em;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.modal-content button:hover {
+    background-color: #008f5a;
+}
+
+.modal-content p {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 0.9em;
+}
+
+.modal-content p a {
+    color: #00a86b;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.modal-content p a:hover {
+    color: #00794a;
+}
+
+.close-btn {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 1.5em;
+    color: #888;
+    cursor: pointer;
+}
+
+.close-btn:hover {
+    color: #1e1e2f;
+}
+
+/* Optional: Profile Modal Specific */
+.profile-modal .profile-info {
+    margin: 20px 0;
+}
+
+.profile-modal .profile-info p {
+    margin: 10px 0;
+    font-size: 1em;
+    color: #333;
+}
+
+/* ==== HEADER ==== */
+header {
+    background-color: #1e1e2f;
+    color: white;
+    padding: 60px 20px 40px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 3em;
+}
+
+header p {
+    margin: 10px 0 20px;
+    font-size: 1.2em;
+    color: #c5c5d0;
+}
+
+.cta-button {
+    background-color: #00a86b;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.cta-button:hover {
+    background-color: #008f5a;
+}
+
+/* ==== SECTIONS ==== */
+section {
+    padding: 60px 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+}
+
+.feature-card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    flex: 1 1 250px;
+    max-width: 300px;
+    text-align: center;
+}
+
+.feature-card h3 {
+    margin-top: 0;
+}
+
+/* ==== FOOTER ==== */
+footer {
+    background-color: #00a86b;
+    color: #fff;
+    text-align: center;
+    padding: 20px 10px;
+    font-size: 0.9em;
+}
+
+/* ==== RESPONSIVE ==== */
+@media (max-width: 768px) {
+    .nav-right {
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .auth-buttons {
+        flex-direction: column;
+    }
+
+    header h1 {
+        font-size: 2.2em;
+    }
+}
+
+/* ==== DASHBOARD ==== */
+.dashboard-section {
+    padding: 60px 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.dashboard-section h2 {
+    color: #00a86b;
+    margin-bottom: 40px;
+}
+
+.stats-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    padding: 20px 30px;
+    min-width: 200px;
+    flex: 1 1 200px;
+}
+
+.card h3 {
+    color: #1e1e2f;
+    margin-bottom: 10px;
+}
+
+.card p {
+    font-size: 1.5em;
+    margin: 0;
+    color: #1e1e2f;
+    font-weight: bold;
+}
+
+.dashboard-charts {
+    margin-top: 40px;
+}
+
+.chart-placeholder {
+    height: 250px;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #888;
+    font-style: italic;
+    background: #fafafa;
+}
+
+.chart-wrapper {
+    position: relative;
+    margin: 0 auto;
+    height: 350px;
+    width: 100%;
+    max-width: 800px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Dashboard - Trade Tracker</title>
+    <link rel="stylesheet" href="../styles/style.css"/>
+    <link rel="stylesheet" href="../styles/dashboard.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../scripts/include.js" defer></script>
+    <script src="../scripts/dashboard.js" defer></script>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div data-include="partials/navbar.html"></div>
+
+<!-- DASHBOARD SECTION -->
+<section class="dashboard-section">
+    <h2>Dashboard Overview</h2>
+
+    <!-- Stats Summary -->
+    <div class="table-container">
+        <div class="stats-cards">
+            <div class="card">
+                <h3>Total Trades</h3>
+                <p>42</p>
+            </div>
+            <div class="card">
+                <h3>Total P/L</h3>
+                <p class="positive">+$1,250.75</p>
+            </div>
+            <div class="card">
+                <h3>Win Rate</h3>
+                <p>61%</p>
+            </div>
+            <div class="card">
+                <h3>Avg Risk/Reward</h3>
+                <p>1:2.3</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="table-container">
+        <h3>Performance Insights</h3>
+
+        <!-- First row: 3 cards -->
+        <div class="chart-grid chart-row">
+            <div class="chart-box">
+                <h4>Win vs Loss</h4>
+                <canvas id="winLossChart"></canvas>
+            </div>
+
+            <div class="chart-box">
+                <h4>Trade Type (Buy/Sell)</h4>
+                <canvas id="tradeTypeChart"></canvas>
+            </div>
+
+            <div class="chart-box">
+                <h4>Emotions & Discipline</h4>
+                <canvas id="emotionDisciplineChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Second row: 1 wide chart -->
+        <div class="chart-grid single-chart-row">
+            <div class="chart-box full-width">
+                <h4>P/L Over Time</h4>
+                <canvas id="profitChart"></canvas>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<div data-include="partials/footer.html"></div>
+
+</body>
+</html>
