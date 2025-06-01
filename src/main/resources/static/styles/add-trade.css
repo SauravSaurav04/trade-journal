@@ -1,0 +1,112 @@
+/* ==== ADD TRADE FORM ==== */
+.form-section {
+    padding: 60px 20px;
+    max-width: 700px;
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.form-section h2 {
+    text-align: center;
+    color: #00a86b;
+    margin-bottom: 30px;
+}
+
+.trade-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #1e1e2f;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1em;
+    font-family: inherit;
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.submit-button {
+    background-color: #00a86b;
+    color: white;
+    padding: 12px 20px;
+    font-size: 1em;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    align-self: center;
+}
+
+.submit-button:hover {
+    background-color: #008f5a;
+}
+
+/* ==== RANGE SLIDER ==== */
+input[type="range"] {
+    width: 100%;
+    appearance: none;
+    background: transparent;
+    margin: 0;
+    padding: 0;
+}
+
+/* WebKit (Chrome, Safari) */
+input[type="range"]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 6px;
+    background: #ccc;
+    border-radius: 3px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: #00a86b;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-top: -5px; /* aligns thumb with track */
+}
+
+/* Firefox */
+input[type="range"]::-moz-range-track {
+    width: 100%;
+    height: 6px;
+    background: #ccc;
+    border-radius: 3px;
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: #00a86b;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* Optional: Display value next to slider */
+.form-group input[type="range"] + span {
+    margin-left: 10px;
+    font-weight: bold;
+}

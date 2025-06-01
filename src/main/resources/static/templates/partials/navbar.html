@@ -1,0 +1,55 @@
+<nav>
+    <a href="/index.html" class="logo">Trade Tracker</a>
+    <div class="nav-right">
+        <div class="nav-links">
+            <a href="/templates/scanner.html">Scanner</a>
+            <a onclick="navigateIfLoggedIn(ROUTES.dashboard)">Dashboard</a>
+            <a onclick="navigateIfLoggedIn(ROUTES.addTrade)">Add Trade</a>
+            <a onclick="navigateIfLoggedIn(ROUTES.history)">Trade History</a>
+        </div>
+        <div class="auth-buttons">
+            <a class="login" id="loginLink" onclick="openLogin()">Login</a>
+            <a class="signup" id="signupLink" onclick="openSignup()">Sign Up</a>
+            <a class="profile" id="profileLink" style="display:none;" onclick="openProfile()">Profile</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Login Modal -->
+<div class="modal" id="loginModal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('loginModal')">&times;</span>
+        <h2>Login</h2>
+        <input type="email" id="loginEmail" placeholder="Email" required/>
+        <input type="password" id="loginPassword" placeholder="Password" required/>
+        <button onclick="submitLogin()">Login</button>
+        <p>Don't have an account? <a onclick="switchModal('loginModal', 'signupModal')">Sign up</a></p>
+    </div>
+</div>
+
+<!-- Signup Modal -->
+<div class="modal" id="signupModal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('signupModal')">&times;</span>
+        <h2>Create an Account</h2>
+        <input type="text" id="signupName" placeholder="Full Name" required/>
+        <input type="email" id="signupEmail" placeholder="Email" required/>
+        <input type="password" id="signupPassword" placeholder="Password" required/>
+        <input type="password" id="signupConfirm" placeholder="Confirm Password" required/>
+        <button onclick="submitSignup()">Sign Up</button>
+        <p>Already have an account? <a onclick="switchModal('signupModal', 'loginModal')">Log in</a></p>
+    </div>
+</div>
+
+<!-- Profile Modal -->
+<div class="modal profile-modal" id="profileModal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('profileModal')">&times;</span>
+        <h2>Your Profile</h2>
+        <div class="profile-info">
+            <p><strong>Name:</strong> <span id="profileName"></span></p>
+            <p><strong>Email:</strong> <span id="profileEmail"></span></p>
+        </div>
+        <button onclick="logout()">Logout</button>
+    </div>
+</div>

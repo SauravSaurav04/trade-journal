@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: trade-journal
+
+  datasource:
+    url: jdbc:postgresql://ep-misty-band-a87iykfw-pooler.eastus2.azure.neon.tech:5432/neondb?sslmode=require
+    username: neondb_owner
+    password: npg_kfvm1Uw9AIto
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  sql:
+    init:
+      mode: always
