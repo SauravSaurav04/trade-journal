@@ -128,6 +128,7 @@ function logout() {
 }
 
 function updateAuthUI() {
+    getUserDetails();
     const isLoggedIn = sessionStorage.getItem("isLoggedIn") === "true";
 
     const loginBtn = document.getElementById("loginLink");
