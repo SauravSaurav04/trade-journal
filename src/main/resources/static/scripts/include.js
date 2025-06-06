@@ -1,3 +1,5 @@
+var loginKeyListenerAdded = false;
+var signupKeyListenerAdded = false;
 // Include HTML content dynamically
 function includeHTML() {
     const elements = document.querySelectorAll('[data-include]');
@@ -11,6 +13,8 @@ function includeHTML() {
             .then(data => {
                 el.innerHTML = data;
                 updateAuthUI();
+                addLoginEnterKeyListener();
+                addSignupEnterKeyListener();
             })
             .catch(err => console.error(err));
     });
@@ -28,6 +32,7 @@ function openSignup() {
 }
 
 function openProfile() {
+    getUserDetails();
     const name = sessionStorage.getItem("userName");
     const email = sessionStorage.getItem("userEmail");
 
@@ -75,6 +80,12 @@ function navigateIfLoggedIn(targetUrl) {
 function submitLogin() {
     const email = document.getElementById("loginEmail").value;
     const password = document.getElementById("loginPassword").value;
+    const loginButton = document.getElementById("loginButton");
+
+    if (loginButton) {
+        loginButton.disabled = true;
+        loginButton.textContent = "Logging in...";
+    }
 
     fetch("/login", {
         method: "POST",
@@ -85,8 +96,6 @@ function submitLogin() {
     })
     .then(response => {
         if (response.status === 200 || response.redirected) {
-            sessionStorage.setItem("userName", email);
-            sessionStorage.setItem("userEmail", email);
             sessionStorage.setItem("isLoggedIn", "true");
             updateAuthUI();
             const redirectUrl = sessionStorage.getItem("redirectAfterLogin") || "/";
@@ -96,6 +105,16 @@ function submitLogin() {
             alert("Invalid email or password.");
         } else {
             alert("Something went wrong during login.");
+        }
+    })
+    .catch(err => {
+        console.error("Login error:", err);
+        alert("Something went wrong.");
+    })
+    .finally(() => {
+        if (loginButton) {
+            loginButton.disabled = false;
+            loginButton.textContent = "Login";
         }
     });
 }
@@ -109,6 +128,7 @@ function logout() {
 }
 
 function updateAuthUI() {
+    getUserDetails();
     const isLoggedIn = sessionStorage.getItem("isLoggedIn") === "true";
 
     const loginBtn = document.getElementById("loginLink");
@@ -137,14 +157,54 @@ function submitSignup() {
     const email = document.getElementById("signupEmail").value.trim();
     const password = document.getElementById("signupPassword").value;
     const confirmPassword = document.getElementById("signupConfirm").value;
+    const signupButton = document.getElementById("signupButton");
+
+    if (signupButton) {
+        signupButton.disabled = true;
+        signupButton.textContent = "Signing up...";
+    }
 
     if (!name || !email || !password || !confirmPassword) {
         alert("Please fill in all fields.");
+        resetSignupButton();
+        return;
+    }
+
+    if (!email.endsWith("@gmail.com")) {
+        alert("Email must end with '@gmail.com'.");
+        resetSignupButton();
+        return;
+    }
+
+    if (password.length < 8) {
+        alert("Password must be at least 8 characters long.");
+        resetSignupButton();
+        return;
+    }
+    if (!/[A-Z]/.test(password)) {
+        alert("Password must include at least one uppercase letter.");
+        resetSignupButton();
+        return;
+    }
+    if (!/[a-z]/.test(password)) {
+        alert("Password must include at least one lowercase letter.");
+        resetSignupButton();
+        return;
+    }
+    if (!/\d/.test(password)) {
+        alert("Password must include at least one number.");
+        resetSignupButton();
+        return;
+    }
+    if (!/[@$!%*?&]/.test(password)) {
+        alert("Password must include at least one special character (e.g., @$!%*?&).");
+        resetSignupButton();
         return;
     }
 
     if (password !== confirmPassword) {
         alert("Passwords do not match.");
+        resetSignupButton();
         return;
     }
 
@@ -172,5 +232,84 @@ function submitSignup() {
     .catch(err => {
         console.error("Error during signup:", err);
         alert("Something went wrong. Please try again.");
+    })
+    .finally(() => {
+        resetSignupButton();
+    });
+}
+
+function resetSignupButton() {
+    const signupButton = document.getElementById("signupButton");
+    if (signupButton) {
+        signupButton.disabled = false;
+        signupButton.textContent = "Sign Up";
+    }
+}
+
+function addLoginEnterKeyListener() {
+    if (loginKeyListenerAdded) return;
+    loginKeyListenerAdded = true;
+
+    const emailInput = document.getElementById("loginEmail");
+    const passwordInput = document.getElementById("loginPassword");
+
+    if (!emailInput || !passwordInput) return;
+
+    const handleEnterKey = (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            submitLogin();
+        }
+    };
+
+    emailInput.addEventListener("keydown", handleEnterKey);
+    passwordInput.addEventListener("keydown", handleEnterKey);
+}
+
+function addSignupEnterKeyListener() {
+    if (signupKeyListenerAdded) return;
+    signupKeyListenerAdded = true;
+
+    const nameInput = document.getElementById("signupName");
+    const emailInput = document.getElementById("signupEmail");
+    const passwordInput = document.getElementById("signupPassword");
+    const confirmInput = document.getElementById("signupConfirm");
+
+    if (!nameInput || !emailInput || !passwordInput || !confirmInput) return;
+
+    const handleEnterKey = (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            submitSignup();
+        }
+    };
+
+    nameInput.addEventListener("keydown", handleEnterKey);
+    emailInput.addEventListener("keydown", handleEnterKey);
+    passwordInput.addEventListener("keydown", handleEnterKey);
+    confirmInput.addEventListener("keydown", handleEnterKey);
+}
+
+function getUserDetails() {
+    fetch("/getUserDetails", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error("Failed to fetch user details");
+        }
+    })
+    .then(data => {
+        sessionStorage.setItem("userName", data.name);
+        sessionStorage.setItem("userEmail", data.email);
+        updateAuthUI();
+    })
+    .catch(err => {
+        console.error("Error fetching user details:", err);
     });
 }
