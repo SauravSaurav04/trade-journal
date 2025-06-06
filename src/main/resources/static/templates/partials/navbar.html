@@ -22,7 +22,7 @@
         <h2>Login</h2>
         <input type="email" id="loginEmail" placeholder="Email" required/>
         <input type="password" id="loginPassword" placeholder="Password" required/>
-        <button onclick="submitLogin()">Login</button>
+        <button id="loginButton" onclick="submitLogin()">Login</button>
         <p>Don't have an account? <a onclick="switchModal('loginModal', 'signupModal')">Sign up</a></p>
     </div>
 </div>
@@ -36,7 +36,7 @@
         <input type="email" id="signupEmail" placeholder="Email" required/>
         <input type="password" id="signupPassword" placeholder="Password" required/>
         <input type="password" id="signupConfirm" placeholder="Confirm Password" required/>
-        <button onclick="submitSignup()">Sign Up</button>
+        <button id="signupButton" onclick="submitSignup()">Sign Up</button>
         <p>Already have an account? <a onclick="switchModal('signupModal', 'loginModal')">Log in</a></p>
     </div>
 </div>

@@ -10,85 +10,39 @@
     <script src="../scripts/trade-history.js" defer></script>
 </head>
 <body>
+<div class="page-wrapper">
+    <!-- NAVBAR -->
+    <div data-include="partials/navbar.html"></div>
 
-<!-- NAVBAR -->
-<div data-include="partials/navbar.html"></div>
-
-<!-- TRADE HISTORY SECTION -->
-<section class="history-section">
-    <h2>Your Trade History</h2>
-    <div class="table-container">
-        <table class="trade-table">
-            <thead>
-            <tr>
-                <th><span class="sortable">Date</span></th>
-                <th><span class="sortable">Instrument</span></th>
-                <th><span class="sortable">Type</span></th>
-                <th><span class="sortable">Entry</span></th>
-                <th><span class="sortable">Exit</span></th>
-                <th><span class="sortable">Stop Loss</span></th>
-                <th><span class="sortable">Take Profit</span></th>
-                <th><span class="sortable">Qty</span></th>
-                <th><span class="sortable">Risk</span></th>
-                <th><span class="sortable">Strategy</span></th>
-                <th><span class="sortable">Emotion</span></th>
-                <th><span class="sortable">Discipline</span></th>
-                <th><span class="sortable">P/L</span></th>
-            </tr>
-            </thead>
-            <tbody>
-            <!-- Sample trade row -->
-            <tr>
-                <td>2025-05-10</td>
-                <td>Gold</td>
-                <td>Buy</td>
-                <td>2320.50</td>
-                <td>2345.75</td>
-                <td>2300.00</td>
-                <td>2360.00</td>
-                <td>2</td>
-                <td>1.5</td>
-                <td>Breakout</td>
-                <td>Confident</td>
-                <td>8</td>
-                <td class="positive">+50.50</td>
-            </tr>
-            <tr>
-                <td>2025-05-08</td>
-                <td>BTC</td>
-                <td>Sell</td>
-                <td>64000</td>
-                <td>64500</td>
-                <td>64700</td>
-                <td>63000</td>
-                <td>0.5</td>
-                <td>2.0</td>
-                <td>Reversal</td>
-                <td>Anxious</td>
-                <td>4</td>
-                <td class="negative">-250.00</td>
-            </tr>
-            <!-- More rows can be added dynamically later -->
-            </tbody>
-        </table>
-    </div>
-</section>
-
-<!-- EDIT TRADE MODAL -->
-<div id="tradeModal" class="modal">
-    <div class="modal-content">
-        <span class="close-button">&times;</span>
-        <h3>Trade Details</h3>
-        <div id="tradeDetails" class="modal-fields">
-            <!-- Fields will be generated dynamically -->
+    <!-- TRADE HISTORY SECTION -->
+    <section class="history-section">
+        <h2>Your Trade History</h2>
+        <div class="table-container">
+            <table class="trade-table">
+                <thead>
+                <tr>
+                    <th><span class="sortable">No.</span></th>
+                    <th><span class="sortable">Date</span></th>
+                    <th><span class="sortable">Instrument</span></th>
+                    <th><span class="sortable">Type</span></th>
+                    <th><span class="sortable">Qty</span></th>
+                    <th><span class="sortable">Risk</span></th>
+                    <th><span class="sortable">Reward</span></th>
+                    <th><span class="sortable">Strategy</span></th>
+                    <th><span class="sortable">Emotion</span></th>
+                    <th><span class="sortable">Discipline</span></th>
+                    <th><span class="sortable">P/L</span></th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Rows can be added dynamically -->
+                </tbody>
+            </table>
         </div>
-        <div class="modal-footer">
-            <button type="button" class="delete-btn">Delete Trade</button>
-        </div>
-    </div>
+    </section>
+
+    <!-- FOOTER -->
+    <div data-include="partials/footer.html"></div>
 </div>
-
-<!-- FOOTER -->
-<div data-include="partials/footer.html"></div>
 </body>
 </html>

@@ -355,3 +355,19 @@ footer {
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
+
+/* === Layout Fix for Footer Positioning === */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+.page-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.page-wrapper > section {
+    flex: 1;
+}
