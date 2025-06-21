@@ -1,7 +1,12 @@
 document.addEventListener("DOMContentLoaded", async function () {
+    let currentYear = new Date().getFullYear();
+    let currentMonth = new Date().getMonth();
+    let tradeDataGlobal = [];
+
     try {
         const response = await fetch("/getAllTrades");
         const trades = await response.json();
+        tradeDataGlobal = trades;
 
         if (!Array.isArray(trades)) {
             console.error("Invalid data received:", trades);
@@ -157,6 +162,93 @@ document.addEventListener("DOMContentLoaded", async function () {
                     }
                 }
             }
+        });
+
+        // === Helper: Format local date string ===
+        function formatLocalDateKey(date) {
+            const local = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+            return local.toISOString().split('T')[0];
+        }
+
+        // === Calendar P/L View ===
+        function renderCalendar(trades, year, month) {
+            const calendarEl = document.getElementById('calendar');
+            const monthTitleEl = document.getElementById('calendar-month-title');
+            if (!calendarEl || !monthTitleEl) return;
+
+            calendarEl.innerHTML = '';
+            const monthNames = [
+                'January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November', 'December'
+            ];
+
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            monthTitleEl.innerText = `${monthNames[month]} ${year}`;
+
+            const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            weekdays.forEach(day => {
+                const header = document.createElement('div');
+                header.classList.add('calendar-header');
+                header.innerText = day;
+                calendarEl.appendChild(header);
+            });
+
+            // Map of date (yyyy-mm-dd) => total PnL
+            const tradeMap = {};
+            trades.forEach(t => {
+                const date = new Date(t.tradeDate);
+                const key = formatLocalDateKey(date);
+                if (!tradeMap[key]) tradeMap[key] = 0;
+                tradeMap[key] += t.pnl;
+            });
+
+            // Empty cells before first day of month
+            for (let i = 0; i < firstDay; i++) {
+                const empty = document.createElement('div');
+                empty.classList.add('calendar-day');
+                calendarEl.appendChild(empty);
+            }
+
+            // Fill in actual days
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateObj = new Date(year, month, day);
+                const key = formatLocalDateKey(dateObj);
+                const pnl = tradeMap[key];
+
+                const cell = document.createElement('div');
+                cell.classList.add('calendar-day');
+
+                if (pnl != null) {
+                    const pnlClass = pnl >= 0 ? 'profit' : 'loss';
+                    cell.innerHTML = `${day}<br><span class="${pnlClass}">${pnl >= 0 ? '+' : ''}${pnl.toFixed(2)}</span>`;
+                } else {
+                    cell.innerText = day;
+                }
+
+                calendarEl.appendChild(cell);
+            }
+        }
+
+        renderCalendar(tradeDataGlobal, currentYear, currentMonth);
+
+        document.getElementById('calendar-prev').addEventListener('click', () => {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            renderCalendar(tradeDataGlobal, currentYear, currentMonth);
+        });
+
+        document.getElementById('calendar-next').addEventListener('click', () => {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            renderCalendar(tradeDataGlobal, currentYear, currentMonth);
         });
 
     } catch (error) {
