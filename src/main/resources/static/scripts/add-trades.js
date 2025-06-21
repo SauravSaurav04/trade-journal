@@ -36,19 +36,33 @@ document.addEventListener("DOMContentLoaded", () => {
 document.querySelector("form").addEventListener("submit", async (e) => {
     e.preventDefault();
 
+    const submitButton = document.getElementById("saveTradeButton");
+    submitButton.disabled = true;
+    submitButton.textContent = "Saving...";
+
     const formData = new FormData(e.target);
+    const plainData = Object.fromEntries(formData.entries());
 
-    const data = Object.fromEntries(formData.entries());
+    try {
+        const response = await fetch("/trades", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(plainData)
+        });
 
-    const response = await fetch("/trades", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-    });
-
-    if (response.ok) {
-        alert("Trade saved!");
-    } else {
-        alert("Error saving trade.");
+        if (response.ok) {
+            alert("Trade saved!");
+            submitButton.disabled = false;
+            submitButton.textContent = "Save Trade";
+        } else {
+            alert("Error saving trade.");
+            submitButton.disabled = false;
+            submitButton.textContent = "Save Trade";
+        }
+    } catch (error) {
+        console.error("Request failed:", error);
+        alert("An error occurred.");
+        submitButton.disabled = false;
+        submitButton.textContent = "Save Trade";
     }
 });
