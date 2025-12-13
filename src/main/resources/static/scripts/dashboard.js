@@ -277,13 +277,44 @@ document.addEventListener("DOMContentLoaded", async function () {
                 calendarEl.appendChild(header);
             });
 
-            // Map of date (yyyy-mm-dd) => total PnL
+            // Map of date (yyyy-mm-dd) => trade statistics
             const tradeMap = {};
             trades.forEach(t => {
                 const date = new Date(t.tradeDate);
                 const key = formatLocalDateKey(date);
-                if (!tradeMap[key]) tradeMap[key] = 0;
-                tradeMap[key] += t.pnl;
+
+                if (!tradeMap[key]) {
+                    tradeMap[key] = {
+                        totalPnL: 0,
+                        totalTrades: 0,
+                        profitTrades: 0,
+                        lossTrades: 0,
+                        followedAllRules: 0,
+                        notFollowedAllRules: 0
+                    };
+                }
+
+                tradeMap[key].totalPnL += t.pnl;
+                tradeMap[key].totalTrades += 1;
+
+                if (t.pnl > 0) {
+                    tradeMap[key].profitTrades += 1;
+                } else if (t.pnl < 0) {
+                    tradeMap[key].lossTrades += 1;
+                }
+
+                // Check if all 5 rules were followed
+                const allRulesFollowed = t.entrySetup > 0 &&
+                    t.exitDiscipline > 0 &&
+                    t.correctQuantity > 0 &&
+                    t.calculatedRisk > 0 &&
+                    t.emotionDiscipline > 0;
+
+                if (allRulesFollowed) {
+                    tradeMap[key].followedAllRules += 1;
+                } else {
+                    tradeMap[key].notFollowedAllRules += 1;
+                }
             });
 
             // Empty cells before first day of month
@@ -297,14 +328,25 @@ document.addEventListener("DOMContentLoaded", async function () {
             for (let day = 1; day <= daysInMonth; day++) {
                 const dateObj = new Date(year, month, day);
                 const key = formatLocalDateKey(dateObj);
-                const pnl = tradeMap[key];
+                const stats = tradeMap[key];
 
                 const cell = document.createElement('div');
                 cell.classList.add('calendar-day');
 
-                if (pnl != null) {
-                    const pnlClass = pnl >= 0 ? 'profit' : 'loss';
-                    cell.innerHTML = `${day}<br><span class="${pnlClass}">${pnl >= 0 ? '+' : ''}${pnl.toFixed(2)}</span>`;
+                if (stats) {
+                    const pnlClass = stats.totalPnL >= 0 ? 'profit' : 'loss';
+                    cell.innerHTML = `${day}<br><span class="${pnlClass}">${stats.totalPnL >= 0 ? '+' : ''}${stats.totalPnL.toFixed(2)}</span>`;
+
+                    // Add tooltip with detailed statistics
+                    cell.setAttribute('title',
+                        `Total Trades: ${stats.totalTrades}\n` +
+                        `Profit Trades: ${stats.profitTrades}\n` +
+                        `Loss Trades: ${stats.lossTrades}\n` +
+                        `Followed All Rules: ${stats.followedAllRules}\n` +
+                        `Not All Rules Followed: ${stats.notFollowedAllRules}`
+                    );
+
+                    cell.style.cursor = 'pointer';
                 } else {
                     cell.innerText = day;
                 }
