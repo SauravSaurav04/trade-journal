@@ -3,6 +3,12 @@ document.addEventListener("DOMContentLoaded", async function () {
     let currentMonth = new Date().getMonth();
     let tradeDataGlobal = [];
 
+    // Chart instances for proper lifecycle management
+    let chartProfitChart = null;
+    let chartWinLoss = null;
+    let chartTradeType = null;
+    let chartDiscipline = null;
+
     async function loadTrades(startDate, endDate) {
         let url = "/getAllTrades";
         if (startDate && endDate) {
@@ -63,7 +69,8 @@ document.addEventListener("DOMContentLoaded", async function () {
         document.querySelector('.card:nth-child(4) p').innerText = `1:${rrRatio.toFixed(1)}`;
 
         // === Profit Chart ===
-        new Chart(document.getElementById('profitChart').getContext('2d'), {
+        if (chartProfitChart) chartProfitChart.destroy();
+        chartProfitChart = new Chart(document.getElementById('profitChart').getContext('2d'), {
             type: 'line',
             data: {
                 labels: labels,
@@ -92,7 +99,8 @@ document.addEventListener("DOMContentLoaded", async function () {
         });
 
         // === Win vs Loss Chart ===
-        new Chart(document.getElementById('winLossChart').getContext('2d'), {
+        if (chartWinLoss) chartWinLoss.destroy();
+        chartWinLoss = new Chart(document.getElementById('winLossChart').getContext('2d'), {
             type: 'pie',
             data: {
                 labels: ['Wins', 'Losses'],
@@ -111,7 +119,8 @@ document.addEventListener("DOMContentLoaded", async function () {
         });
 
         // === Buy vs Sell Chart ===
-        new Chart(document.getElementById('tradeTypeChart').getContext('2d'), {
+        if (chartTradeType) chartTradeType.destroy();
+        chartTradeType = new Chart(document.getElementById('tradeTypeChart').getContext('2d'), {
             type: 'doughnut',
             data: {
                 labels: ['Buy', 'Sell'],
@@ -169,7 +178,8 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
 
         // Create semi-circle gauge chart
-        new Chart(document.getElementById('emotionDisciplineChart').getContext('2d'), {
+        if (chartDiscipline) chartDiscipline.destroy();
+        chartDiscipline = new Chart(document.getElementById('emotionDisciplineChart').getContext('2d'), {
             type: 'doughnut',
             data: {
                 datasets: [{
