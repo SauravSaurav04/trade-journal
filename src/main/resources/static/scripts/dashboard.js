@@ -81,12 +81,12 @@ document.addEventListener("DOMContentLoaded", async function () {
             options: {
                 responsive: true,
                 plugins: {
-                    legend: { position: 'top', labels: { color: '#1e1e2f' }},
+                    legend: { position: 'top', labels: { color: '#1e1e2f' } },
                     title: { display: true, text: 'Profit Over Time', color: '#1e1e2f' }
                 },
                 scales: {
-                    x: { ticks: { color: '#1e1e2f' }},
-                    y: { beginAtZero: true, ticks: { color: '#1e1e2f' }}
+                    x: { ticks: { color: '#1e1e2f' } },
+                    y: { beginAtZero: true, ticks: { color: '#1e1e2f' } }
                 }
             }
         });
@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 responsive: true,
                 plugins: {
                     title: { display: true, text: 'Win vs Loss Distribution', color: '#1e1e2f' },
-                    legend: { labels: { color: '#1e1e2f' }}
+                    legend: { labels: { color: '#1e1e2f' } }
                 }
             }
         });
@@ -124,100 +124,116 @@ document.addEventListener("DOMContentLoaded", async function () {
                 responsive: true,
                 plugins: {
                     title: { display: true, text: 'Buy vs Sell Trades', color: '#1e1e2f' },
-                    legend: { labels: { color: '#1e1e2f' }}
+                    legend: { labels: { color: '#1e1e2f' } }
                 }
             }
         });
 
-        // === Bar Chart (Emotions & Discipline) ===
+        // === Discipline Score Gauge Chart ===
+        // Calculate overall discipline percentage
+        const totalRules = 5; // 5 rules per trade
+        const totalPossiblePoints = totalTrades * totalRules;
+
+        let totalPositivePoints = 0;
+        trades.forEach(t => {
+            totalPositivePoints += (t.entrySetup > 0 ? 1 : 0);
+            totalPositivePoints += (t.exitDiscipline > 0 ? 1 : 0);
+            totalPositivePoints += (t.correctQuantity > 0 ? 1 : 0);
+            totalPositivePoints += (t.calculatedRisk > 0 ? 1 : 0);
+            totalPositivePoints += (t.emotionDiscipline > 0 ? 1 : 0);
+        });
+
+        const disciplinePercentage = totalPossiblePoints > 0
+            ? ((totalPositivePoints / totalPossiblePoints) * 100).toFixed(1)
+            : 0;
+
+        // Count trades that followed ALL 5 rules vs trades that didn't
+        const tradesFollowedAllRules = trades.filter(t =>
+            t.entrySetup > 0 &&
+            t.exitDiscipline > 0 &&
+            t.correctQuantity > 0 &&
+            t.calculatedRisk > 0 &&
+            t.emotionDiscipline > 0
+        ).length;
+
+        const tradesNotFollowedAllRules = totalTrades - tradesFollowedAllRules;
+
+        // Determine gauge color based on percentage
+        let gaugeColor;
+        if (disciplinePercentage >= 80) {
+            gaugeColor = '#4caf50'; // Green
+        } else if (disciplinePercentage >= 60) {
+            gaugeColor = '#ff9800'; // Orange/Yellow
+        } else {
+            gaugeColor = '#f44336'; // Red
+        }
+
+        // Create semi-circle gauge chart
         new Chart(document.getElementById('emotionDisciplineChart').getContext('2d'), {
-            type: 'bar',
+            type: 'doughnut',
             data: {
-                labels: [''],
-                datasets: [
-                    {
-                        label: 'Enter on Setup',
-                        data: [trades.filter(t => t.entrySetup > 0).length],
-                        backgroundColor: '#2196f3',
-                        borderColor: '#1976d2',
-                        borderWidth: 1
-                    },
-                    {
-                        label: 'Fixed Stop-loss',
-                        data: [trades.filter(t => t.exitDiscipline > 0).length],
-                        backgroundColor: '#4caf50',
-                        borderColor: '#388e3c',
-                        borderWidth: 1
-                    },
-                    {
-                        label: 'Calculated Quantity',
-                        data: [trades.filter(t => t.correctQuantity > 0).length],
-                        backgroundColor: '#ff9800',
-                        borderColor: '#f57c00',
-                        borderWidth: 1
-                    },
-                    {
-                        label: 'Calculated Risk',
-                        data: [trades.filter(t => t.calculatedRisk > 0).length],
-                        backgroundColor: '#00a86b',
-                        borderColor: '#00796b',
-                        borderWidth: 1
-                    },
-                    {
-                        label: 'Emotional Discipline',
-                        data: [trades.filter(t => t.emotionDiscipline > 0).length],
-                        backgroundColor: '#f44336',
-                        borderColor: '#d32f2f',
-                        borderWidth: 1
-                    }
-                ]
+                datasets: [{
+                    data: [disciplinePercentage, 100 - disciplinePercentage],
+                    backgroundColor: [gaugeColor, '#e0e0e0'],
+                    borderWidth: 0
+                }]
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: true,
+                circumference: 180,
+                rotation: -90,
+                cutout: '75%',
                 plugins: {
-                    title: {
-                        display: true,
-                        color: '#1e1e2f',
-                        padding: { top: 0, bottom: 0 }
-                    },
-                    legend: {
-                        display: false,
-                        position: 'top',
-                        labels: {
-                            color: '#1e1e2f',
-                            font: { size: 10 },
-                            padding: 8
-                        },
-                        align: 'center',
-                        maxHeight: 20
-                    },
+                    legend: { display: false },
                     tooltip: {
                         enabled: true,
-                        mode: 'dataset',
-                        intersect: true,
                         callbacks: {
-                            label: function(context) {
-                                return `${context.dataset.label}: ${context.parsed.y}`;
+                            label: function (context) {
+                                const index = context.dataIndex;
+                                if (index === 0) {
+                                    // First segment (colored part) - trades that followed all rules
+                                    return `Followed All Rules: ${tradesFollowedAllRules} trades`;
+                                } else {
+                                    // Second segment (gray part) - trades that didn't follow all rules
+                                    return `Not All Rules Followed: ${tradesNotFollowedAllRules} trades`;
+                                }
+                            },
+                            title: function () {
+                                return ''; // No title in tooltip
                             }
                         }
-                    }
-                },
-                layout: {
-                    padding: { top: 0, bottom: 0 }
-                },
-                scales: {
-                    x: {
-                        display: false,
-                        grid: { display: false },
-                        ticks: { display: false }
                     },
-                    y: {
-                        display: false,
-                        grid: { display: false },
-                        ticks: { display: false }
+                    title: {
+                        display: false
                     }
                 }
-            }
+            },
+            plugins: [{
+                id: 'centerText',
+                afterDraw: function (chart) {
+                    const ctx = chart.ctx;
+                    const width = chart.width;
+                    const height = chart.height;
+
+                    ctx.restore();
+                    ctx.font = 'bold 36px Arial';
+                    ctx.fillStyle = gaugeColor;
+                    ctx.textBaseline = 'middle';
+                    ctx.textAlign = 'center';
+
+                    const centerX = width / 2;
+                    const centerY = height / 1.5;
+
+                    ctx.fillText(disciplinePercentage + '%', centerX, centerY);
+
+                    ctx.font = '14px Arial';
+                    ctx.fillStyle = '#666';
+                    ctx.fillText('Discipline Score', centerX, centerY + 30);
+
+                    ctx.save();
+                }
+            }]
         });
 
         // === Helper: Format local date string ===
@@ -309,7 +325,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     // Date range filter logic
-    document.getElementById('filter-date-btn').addEventListener('click', function() {
+    document.getElementById('filter-date-btn').addEventListener('click', function () {
         const startDate = document.getElementById('start-date').value;
         const endDate = document.getElementById('end-date').value;
         loadTrades(startDate, endDate);
