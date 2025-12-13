@@ -3,11 +3,18 @@ document.addEventListener("DOMContentLoaded", async function () {
     let currentMonth = new Date().getMonth();
     let tradeDataGlobal = [];
 
-    try {
-        const response = await fetch("/getAllTrades");
+    async function loadTrades(startDate, endDate) {
+        let url = "/getAllTrades";
+        if (startDate && endDate) {
+            url += `?startDate=${startDate}&endDate=${endDate}`;
+        }
+        const response = await fetch(url);
         const trades = await response.json();
         tradeDataGlobal = trades;
+        renderDashboard(trades);
+    }
 
+    function renderDashboard(trades) {
         if (!Array.isArray(trades)) {
             console.error("Invalid data received:", trades);
             return;
@@ -122,43 +129,92 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
         });
 
-        // === Radar Chart (Emotions & Discipline) ===
+        // === Bar Chart (Emotions & Discipline) ===
         new Chart(document.getElementById('emotionDisciplineChart').getContext('2d'), {
-            type: 'radar',
+            type: 'bar',
             data: {
-                labels: ['Entry Setup', 'Exit Discipline', 'Correct Quantity', 'Calculated Risk', 'Emotion Discipline'],
-                datasets: [{
-                    label: 'Avg Rating (1–10)',
-                    data: [
-                        emotions.entrySetup,
-                        emotions.exitDiscipline,
-                        emotions.correctQuantity,
-                        emotions.calculatedRisk,
-                        emotions.emotionDiscipline
-                    ],
-                    backgroundColor: 'rgba(33,150,243,0.2)',
-                    borderColor: '#2196f3',
-                    pointBackgroundColor: '#2196f3'
-                }]
+                labels: [''],
+                datasets: [
+                    {
+                        label: 'Enter on Setup',
+                        data: [trades.filter(t => t.entrySetup > 0).length],
+                        backgroundColor: '#2196f3',
+                        borderColor: '#1976d2',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Fixed Stop-loss',
+                        data: [trades.filter(t => t.exitDiscipline > 0).length],
+                        backgroundColor: '#4caf50',
+                        borderColor: '#388e3c',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Calculated Quantity',
+                        data: [trades.filter(t => t.correctQuantity > 0).length],
+                        backgroundColor: '#ff9800',
+                        borderColor: '#f57c00',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Calculated Risk',
+                        data: [trades.filter(t => t.calculatedRisk > 0).length],
+                        backgroundColor: '#00a86b',
+                        borderColor: '#00796b',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Emotional Discipline',
+                        data: [trades.filter(t => t.emotionDiscipline > 0).length],
+                        backgroundColor: '#f44336',
+                        borderColor: '#d32f2f',
+                        borderWidth: 1
+                    }
+                ]
             },
             options: {
                 responsive: true,
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Emotional & Mental Ratings',
-                        color: '#1e1e2f'
+                        color: '#1e1e2f',
+                        padding: { top: 0, bottom: 0 }
                     },
                     legend: {
-                        labels: { color: '#1e1e2f' }
+                        display: false,
+                        position: 'top',
+                        labels: {
+                            color: '#1e1e2f',
+                            font: { size: 10 },
+                            padding: 8
+                        },
+                        align: 'center',
+                        maxHeight: 20
+                    },
+                    tooltip: {
+                        enabled: true,
+                        mode: 'dataset',
+                        intersect: true,
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.dataset.label}: ${context.parsed.y}`;
+                            }
+                        }
                     }
                 },
+                layout: {
+                    padding: { top: 0, bottom: 0 }
+                },
                 scales: {
-                    r: {
-                        angleLines: { color: '#ccc' },
-                        grid: { color: '#eee' },
-                        pointLabels: { color: '#1e1e2f' },
-                        ticks: { beginAtZero: true, color: '#1e1e2f' }
+                    x: {
+                        display: false,
+                        grid: { display: false },
+                        ticks: { display: false }
+                    },
+                    y: {
+                        display: false,
+                        grid: { display: false },
+                        ticks: { display: false }
                     }
                 }
             }
@@ -250,8 +306,15 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
             renderCalendar(tradeDataGlobal, currentYear, currentMonth);
         });
-
-    } catch (error) {
-        console.error("Error fetching trade data:", error);
     }
+
+    // Date range filter logic
+    document.getElementById('filter-date-btn').addEventListener('click', function() {
+        const startDate = document.getElementById('start-date').value;
+        const endDate = document.getElementById('end-date').value;
+        loadTrades(startDate, endDate);
+    });
+
+    // Initial load (all trades)
+    loadTrades();
 });

@@ -5,11 +5,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 
 @Data
 @Entity
 @Builder
-@Table(name = "TRADES_INFO")
+@Table(name = "TRADE_INFO")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Trade {
@@ -20,7 +24,9 @@ public class Trade {
 
     private String userEmail;
 
-    private String tradeDate;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate tradeDate;
     private String instrument;
     private String otherInstrument;
     private String tradeType;

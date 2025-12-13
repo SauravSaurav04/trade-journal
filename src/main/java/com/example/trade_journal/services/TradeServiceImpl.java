@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -43,5 +44,15 @@ public class TradeServiceImpl implements TradeService {
     public List<Trade> getAllTrades() {
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         return tradeRepository.findByUserEmail(userEmail);
+    }
+
+    @Override
+    public List<Trade> getAllTrades(LocalDate startDate, LocalDate endDate) {
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (startDate != null && endDate != null) {
+            return tradeRepository.findByUserEmailAndTradeDateBetween(userEmail, startDate, endDate);
+        } else {
+            return tradeRepository.findByUserEmail(userEmail);
+        }
     }
 }
