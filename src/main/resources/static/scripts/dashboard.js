@@ -1,7 +1,8 @@
 document.addEventListener("DOMContentLoaded", async function () {
     let currentYear = new Date().getFullYear();
     let currentMonth = new Date().getMonth();
-    let tradeDataGlobal = [];
+    let tradeDataGlobal = []; // Filtered trades for dashboard charts
+    let allTradesGlobal = []; // All trades for calendar (unfiltered)
 
     // Chart instances for proper lifecycle management
     let chartProfitChart = null;
@@ -16,8 +17,15 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
         const response = await fetch(url);
         const trades = await response.json();
-        tradeDataGlobal = trades;
+        tradeDataGlobal = trades; // Store filtered data for charts
+
+        // On initial load (no filter), also update allTradesGlobal
+        if (!startDate && !endDate) {
+            allTradesGlobal = trades;
+        }
+
         renderDashboard(trades);
+        renderCalendar(allTradesGlobal, currentYear, currentMonth); // Calendar always uses all trades
     }
 
     function renderDashboard(trades) {
@@ -246,135 +254,135 @@ document.addEventListener("DOMContentLoaded", async function () {
             }]
         });
 
-        // === Helper: Format local date string ===
-        function formatLocalDateKey(date) {
-            const local = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
-            return local.toISOString().split('T')[0];
-        }
-
-        // === Calendar P/L View ===
-        function renderCalendar(trades, year, month) {
-            const calendarEl = document.getElementById('calendar');
-            const monthTitleEl = document.getElementById('calendar-month-title');
-            if (!calendarEl || !monthTitleEl) return;
-
-            calendarEl.innerHTML = '';
-            const monthNames = [
-                'January', 'February', 'March', 'April', 'May', 'June',
-                'July', 'August', 'September', 'October', 'November', 'December'
-            ];
-
-            const firstDay = new Date(year, month, 1).getDay();
-            const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-            monthTitleEl.innerText = `${monthNames[month]} ${year}`;
-
-            const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-            weekdays.forEach(day => {
-                const header = document.createElement('div');
-                header.classList.add('calendar-header');
-                header.innerText = day;
-                calendarEl.appendChild(header);
-            });
-
-            // Map of date (yyyy-mm-dd) => trade statistics
-            const tradeMap = {};
-            trades.forEach(t => {
-                const date = new Date(t.tradeDate);
-                const key = formatLocalDateKey(date);
-
-                if (!tradeMap[key]) {
-                    tradeMap[key] = {
-                        totalPnL: 0,
-                        totalTrades: 0,
-                        profitTrades: 0,
-                        lossTrades: 0,
-                        followedAllRules: 0,
-                        notFollowedAllRules: 0
-                    };
-                }
-
-                tradeMap[key].totalPnL += t.pnl;
-                tradeMap[key].totalTrades += 1;
-
-                if (t.pnl > 0) {
-                    tradeMap[key].profitTrades += 1;
-                } else if (t.pnl < 0) {
-                    tradeMap[key].lossTrades += 1;
-                }
-
-                // Check if all 5 rules were followed
-                const allRulesFollowed = t.entrySetup > 0 &&
-                    t.exitDiscipline > 0 &&
-                    t.correctQuantity > 0 &&
-                    t.calculatedRisk > 0 &&
-                    t.emotionDiscipline > 0;
-
-                if (allRulesFollowed) {
-                    tradeMap[key].followedAllRules += 1;
-                } else {
-                    tradeMap[key].notFollowedAllRules += 1;
-                }
-            });
-
-            // Empty cells before first day of month
-            for (let i = 0; i < firstDay; i++) {
-                const empty = document.createElement('div');
-                empty.classList.add('calendar-day');
-                calendarEl.appendChild(empty);
-            }
-
-            // Fill in actual days
-            for (let day = 1; day <= daysInMonth; day++) {
-                const dateObj = new Date(year, month, day);
-                const key = formatLocalDateKey(dateObj);
-                const stats = tradeMap[key];
-
-                const cell = document.createElement('div');
-                cell.classList.add('calendar-day');
-
-                if (stats) {
-                    const pnlClass = stats.totalPnL >= 0 ? 'profit' : 'loss';
-                    cell.innerHTML = `${day}<br><span class="${pnlClass}">${stats.totalPnL >= 0 ? '+' : ''}${stats.totalPnL.toFixed(2)}</span>`;
-
-                    // Add tooltip with detailed statistics
-                    cell.setAttribute('title',
-                        `Total Trades: ${stats.totalTrades}\n` +
-                        `Profit Trades: ${stats.profitTrades}\n` +
-                        `Loss Trades: ${stats.lossTrades}\n` +
-                        `Followed All Rules: ${stats.followedAllRules}\n` +
-                        `Not All Rules Followed: ${stats.notFollowedAllRules}`
-                    );
-
-                    cell.style.cursor = 'pointer';
-                } else {
-                    cell.innerText = day;
-                }
-
-                calendarEl.appendChild(cell);
-            }
-        }
-
-        renderCalendar(tradeDataGlobal, currentYear, currentMonth);
-
-        document.getElementById('calendar-prev').addEventListener('click', () => {
-            currentMonth--;
-            if (currentMonth < 0) {
-                currentMonth = 11;
-                currentYear--;
-            }
-            renderCalendar(tradeDataGlobal, currentYear, currentMonth);
-        });
-
-        document.getElementById('calendar-next').addEventListener('click', () => {
-            currentMonth++;
-            if (currentMonth > 11) {
-                currentMonth = 0;
-                currentYear++;
-            }
-            renderCalendar(tradeDataGlobal, currentYear, currentMonth);
-        });
     }
+
+    // === Helper: Format local date string ===
+    function formatLocalDateKey(date) {
+        const local = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+        return local.toISOString().split('T')[0];
+    }
+
+    // === Calendar P/L View ===
+    function renderCalendar(trades, year, month) {
+        const calendarEl = document.getElementById('calendar');
+        const monthTitleEl = document.getElementById('calendar-month-title');
+        if (!calendarEl || !monthTitleEl) return;
+
+        calendarEl.innerHTML = '';
+        const monthNames = [
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        monthTitleEl.innerText = `${monthNames[month]} ${year}`;
+
+        const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        weekdays.forEach(day => {
+            const header = document.createElement('div');
+            header.classList.add('calendar-header');
+            header.innerText = day;
+            calendarEl.appendChild(header);
+        });
+
+        // Map of date (yyyy-mm-dd) => trade statistics
+        const tradeMap = {};
+        trades.forEach(t => {
+            const date = new Date(t.tradeDate);
+            const key = formatLocalDateKey(date);
+
+            if (!tradeMap[key]) {
+                tradeMap[key] = {
+                    totalPnL: 0,
+                    totalTrades: 0,
+                    profitTrades: 0,
+                    lossTrades: 0,
+                    followedAllRules: 0,
+                    notFollowedAllRules: 0
+                };
+            }
+
+            tradeMap[key].totalPnL += t.pnl;
+            tradeMap[key].totalTrades += 1;
+
+            if (t.pnl > 0) {
+                tradeMap[key].profitTrades += 1;
+            } else if (t.pnl < 0) {
+                tradeMap[key].lossTrades += 1;
+            }
+
+            // Check if all 5 rules were followed
+            const allRulesFollowed = t.entrySetup > 0 &&
+                t.exitDiscipline > 0 &&
+                t.correctQuantity > 0 &&
+                t.calculatedRisk > 0 &&
+                t.emotionDiscipline > 0;
+
+            if (allRulesFollowed) {
+                tradeMap[key].followedAllRules += 1;
+            } else {
+                tradeMap[key].notFollowedAllRules += 1;
+            }
+        });
+
+        // Empty cells before first day of month
+        for (let i = 0; i < firstDay; i++) {
+            const empty = document.createElement('div');
+            empty.classList.add('calendar-day');
+            calendarEl.appendChild(empty);
+        }
+
+        // Fill in actual days
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dateObj = new Date(year, month, day);
+            const key = formatLocalDateKey(dateObj);
+            const stats = tradeMap[key];
+
+            const cell = document.createElement('div');
+            cell.classList.add('calendar-day');
+
+            if (stats) {
+                const pnlClass = stats.totalPnL >= 0 ? 'profit' : 'loss';
+                cell.innerHTML = `${day}<br><span class="${pnlClass}">${stats.totalPnL >= 0 ? '+' : ''}${stats.totalPnL.toFixed(2)}</span>`;
+
+                // Add tooltip with detailed statistics
+                cell.setAttribute('title',
+                    `Total Trades: ${stats.totalTrades}\n` +
+                    `Profit Trades: ${stats.profitTrades}\n` +
+                    `Loss Trades: ${stats.lossTrades}\n` +
+                    `Followed All Rules: ${stats.followedAllRules}\n` +
+                    `Not All Rules Followed: ${stats.notFollowedAllRules}`
+                );
+
+                cell.style.cursor = 'pointer';
+            } else {
+                cell.innerText = day;
+            }
+
+            calendarEl.appendChild(cell);
+        }
+    }
+
+    // Calendar navigation event listeners (outside renderDashboard to prevent multiple registrations)
+    document.getElementById('calendar-prev').addEventListener('click', () => {
+        currentMonth--;
+        if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+        }
+        renderCalendar(allTradesGlobal, currentYear, currentMonth); // Use all trades for navigation
+    });
+
+    document.getElementById('calendar-next').addEventListener('click', () => {
+        currentMonth++;
+        if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
+        }
+        renderCalendar(allTradesGlobal, currentYear, currentMonth); // Use all trades for navigation
+    });
 
     // Date range filter logic
     document.getElementById('filter-date-btn').addEventListener('click', function () {
