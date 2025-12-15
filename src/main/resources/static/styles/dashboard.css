@@ -60,6 +60,10 @@ canvas {
     height: 300px !important;
 }
 
+#profitChart {
+    height: 500px !important;
+}
+
 /* Add to styles/dashboard.css */
 
 .chart-row {
