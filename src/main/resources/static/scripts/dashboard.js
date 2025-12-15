@@ -76,6 +76,65 @@ document.addEventListener("DOMContentLoaded", async function () {
         }));
         document.querySelector('.card:nth-child(4) p').innerText = `1:${rrRatio.toFixed(1)}`;
 
+        // === Daily Background Plugin ===
+        const dailyBackgroundPlugin = {
+            id: 'dailyBackground',
+            beforeDraw: (chart) => {
+                const { ctx, chartArea: { top, bottom, left, right }, scales: { x } } = chart;
+                const labels = chart.data.labels;
+                if (!labels || labels.length === 0) return;
+
+                ctx.save();
+
+                // Helper to find boundary between two data indices
+                const getMidPoint = (i1, i2) => {
+                    const p1 = x.getPixelForValue(i1);
+                    const p2 = x.getPixelForValue(i2);
+                    return (p1 + p2) / 2;
+                };
+
+                // Remove duplicate consecutive labels to find day groups
+                // We assume labels are sorted by date as per loadTrades logic
+                let currentDay = labels[0];
+                let startIndex = 0;
+                let dayCount = 0;
+
+                for (let i = 1; i <= labels.length; i++) {
+                    const isLast = i === labels.length;
+                    const dayChanged = !isLast && labels[i] !== currentDay;
+
+                    if (isLast || dayChanged) {
+                        // Boundaries
+                        // Start: if first day, use chart left. Else, midpoint with prev item.
+                        const startX = (startIndex === 0)
+                            ? left
+                            : getMidPoint(startIndex - 1, startIndex);
+
+                        // End: if last group, use chart right. Else, midpoint with next item.
+                        const endX = isLast
+                            ? right
+                            : getMidPoint(i - 1, i);
+
+                        // Draw background for every other day (e.g., odd count)
+                        if (dayCount % 2 == 0) {
+                            ctx.fillStyle = 'rgba(187, 200, 70, 0.3)';
+                            ctx.fillRect(startX, top, endX - startX, bottom - top);
+                        } else {
+                            ctx.fillStyle = 'rgba(70, 187, 200, 0.3)';
+                            ctx.fillRect(startX, top, endX - startX, bottom - top);
+                        }
+
+                        if (!isLast) {
+                            currentDay = labels[i];
+                            startIndex = i;
+                            dayCount++;
+                        }
+                    }
+                }
+                ctx.restore();
+            }
+        };
+
         // === Profit Chart ===
         if (chartProfitChart) chartProfitChart.destroy();
         chartProfitChart = new Chart(document.getElementById('profitChart').getContext('2d'), {
@@ -93,6 +152,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     pointBackgroundColor: '#00a86b'
                 }]
             },
+            plugins: [dailyBackgroundPlugin],
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
