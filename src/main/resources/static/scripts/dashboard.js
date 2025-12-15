@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         // === Update Stats Summary ===
         document.querySelector('.card:nth-child(1) p').innerText = totalTrades;
         document.querySelector('.card:nth-child(2) p').innerText =
-            (totalProfit >= 0 ? "+" : "") + `$${totalProfit}`;
+            (totalProfit >= 0 ? "+" : "") + `${totalProfit}`;
         document.querySelector('.card:nth-child(2) p').className = totalProfit >= 0 ? 'positive' : 'negative';
         document.querySelector('.card:nth-child(3) p').innerText = `${winRate}%`;
 
@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Profit/Loss ($)',
+                    label: 'Profit/Loss',
                     data: plData,
                     borderColor: '#00a86b',
                     backgroundColor: 'rgba(0, 168, 107, 0.1)',
@@ -153,11 +153,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         let totalPositivePoints = 0;
         trades.forEach(t => {
-            totalPositivePoints += (t.entrySetup > 0 ? 1 : 0);
-            totalPositivePoints += (t.exitDiscipline > 0 ? 1 : 0);
-            totalPositivePoints += (t.correctQuantity > 0 ? 1 : 0);
-            totalPositivePoints += (t.calculatedRisk > 0 ? 1 : 0);
-            totalPositivePoints += (t.emotionDiscipline > 0 ? 1 : 0);
+            totalPositivePoints += (t.entrySetup);
+            totalPositivePoints += (t.exitDiscipline);
+            totalPositivePoints += (t.correctQuantity);
+            totalPositivePoints += (t.calculatedRisk);
+            totalPositivePoints += (t.emotionDiscipline);
         });
 
         const disciplinePercentage = totalPossiblePoints > 0
