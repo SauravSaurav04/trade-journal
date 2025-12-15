@@ -102,7 +102,37 @@ document.addEventListener("DOMContentLoaded", async function () {
                 },
                 plugins: {
                     legend: { position: 'top', labels: { color: '#1e1e2f' } },
-                    title: { display: true, text: 'Profit Over Time', color: '#1e1e2f' }
+                    title: { display: true, text: 'Profit Over Time', color: '#1e1e2f' },
+                    tooltip: {
+                        callbacks: {
+                            title: function (context) {
+                                const index = context[0].dataIndex;
+                                const trade = trades[index];
+                                const date = new Date(trade.tradeDate);
+                                return `${date.toLocaleDateString()} (${date.toLocaleDateString('en-US', { weekday: 'long' })})`;
+                            },
+                            label: function (context) {
+                                const index = context.dataIndex;
+                                const trade = trades[index];
+                                const pnlStr = trade.pnl >= 0 ? `+${trade.pnl}` : `${trade.pnl}`;
+                                return [
+                                    `Instrument: ${trade.instrument}`,
+                                    `P/L: ${pnlStr}`,
+                                    `Risk: ${trade.risk}`,
+                                    `Discipline: ${calculateDiscipline(trade)}/5`
+                                ];
+                            },
+                            labelColor: function (context) {
+                                const index = context.dataIndex;
+                                const trade = trades[index];
+                                const isProfit = trade.pnl >= 0;
+                                return {
+                                    borderColor: isProfit ? '#4caf50' : '#f44336',
+                                    backgroundColor: isProfit ? '#4caf50' : '#f44336'
+                                };
+                            }
+                        }
+                    }
                 },
                 scales: {
                     x: { ticks: { color: '#1e1e2f' } },
@@ -259,6 +289,15 @@ document.addEventListener("DOMContentLoaded", async function () {
             }]
         });
 
+    }
+
+    // === Helper: Calculate discipline score ===
+    function calculateDiscipline(trade) {
+        return (trade.entrySetup || 0) +
+            (trade.exitDiscipline || 0) +
+            (trade.correctQuantity || 0) +
+            (trade.calculatedRisk || 0) +
+            (trade.emotionDiscipline || 0);
     }
 
     // === Helper: Format local date string ===
