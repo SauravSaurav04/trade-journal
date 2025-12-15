@@ -96,6 +96,10 @@ document.addEventListener("DOMContentLoaded", async function () {
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
                 plugins: {
                     legend: { position: 'top', labels: { color: '#1e1e2f' } },
                     title: { display: true, text: 'Profit Over Time', color: '#1e1e2f' }
