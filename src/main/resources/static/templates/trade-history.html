@@ -1,56 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Trade History - Trade Tracker</title>
-    <link rel="stylesheet" href="../styles/style.css"/>
-    <link rel="stylesheet" href="../styles/trade-history.css"/>
+    <link rel="stylesheet" href="../styles/style.css" />
+    <link rel="stylesheet" href="../styles/trade-history.css" />
     <script src="../scripts/include.js" defer></script>
     <script src="../scripts/trade-history.js" defer></script>
 </head>
+
 <body>
-<div class="page-wrapper">
-    <!-- NAVBAR -->
-    <div data-include="partials/navbar.html"></div>
+    <div class="page-wrapper">
+        <!-- NAVBAR -->
+        <div data-include="partials/navbar.html"></div>
 
-    <!-- TRADE HISTORY SECTION -->
-    <section class="history-section">
-        <h2>Your Trade History</h2>
-        <!-- Date Range Picker -->
-        <div class="date-range-picker">
-            <label for="start-date">From:</label>
-            <input type="date" id="start-date" name="start-date">
-            <label for="end-date">To:</label>
-            <input type="date" id="end-date" name="end-date">
-            <button id="filter-date-btn">Filter</button>
-        </div>
-        <div class="table-container">
-            <table class="trade-table">
-                <thead>
-                <tr>
-                    <th><span class="sortable">No.</span></th>
-                    <th><span class="sortable">Date</span></th>
-                    <th><span class="sortable">Instrument</span></th>
-                    <th><span class="sortable">Type</span></th>
-                    <th><span class="sortable">Qty</span></th>
-                    <th><span class="sortable">Risk</span></th>
-                    <th><span class="sortable">Reward</span></th>
-                    <th><span class="sortable">Strategy</span></th>
-                    <th><span class="sortable">Emotion</span></th>
-                    <th><span class="sortable">Discipline</span></th>
-                    <th><span class="sortable">P/L</span></th>
-                </tr>
-                </thead>
-                <tbody>
-                <!-- Rows can be added dynamically -->
-                </tbody>
-            </table>
-        </div>
-    </section>
+        <!-- TRADE HISTORY SECTION -->
+        <section class="history-section">
+            <h2>Your Trade History</h2>
+            <!-- Date Range Picker -->
+            <div class="date-range-picker">
+                <label for="start-date">From:</label>
+                <input type="date" id="start-date" name="start-date">
+                <label for="end-date">To:</label>
+                <input type="date" id="end-date" name="end-date">
+                <button id="filter-date-btn">Filter</button>
+                <div class="quick-date-buttons" style="display: inline-block; margin-left: 10px;">
+                    <button id="btn-today">Today</button>
+                    <button id="btn-week">This Week</button>
+                    <button id="btn-last-week">Last Week</button>
+                    <button id="btn-month">This Month</button>
+                </div>
+            </div>
+            <div class="table-container">
+                <table class="trade-table">
+                    <thead>
+                        <tr>
+                            <th><span class="sortable">No.</span></th>
+                            <th><span class="sortable">Date</span></th>
+                            <th><span class="sortable">Instrument</span></th>
+                            <th><span class="sortable">Type</span></th>
+                            <th><span class="sortable">Qty</span></th>
+                            <th><span class="sortable">Risk</span></th>
+                            <th><span class="sortable">Reward</span></th>
+                            <th><span class="sortable">Strategy</span></th>
+                            <th><span class="sortable">Emotion</span></th>
+                            <th><span class="sortable">Discipline</span></th>
+                            <th><span class="sortable">P/L</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows can be added dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
 
-    <!-- FOOTER -->
-    <div data-include="partials/footer.html"></div>
-</div>
+        <!-- FOOTER -->
+        <div data-include="partials/footer.html"></div>
+    </div>
 </body>
+
 </html>

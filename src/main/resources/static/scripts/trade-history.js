@@ -45,10 +45,83 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Date range filter logic
-    document.getElementById('filter-date-btn').addEventListener('click', function() {
+    document.getElementById('filter-date-btn').addEventListener('click', function () {
         const startDate = document.getElementById('start-date').value;
         const endDate = document.getElementById('end-date').value;
         fetchTrades(startDate, endDate);
+    });
+
+    // === Helper: Format Date for Input ===
+    const formatDateInput = (date) => {
+        const d = new Date(date);
+        let month = '' + (d.getMonth() + 1);
+        let day = '' + d.getDate();
+        const year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-');
+    };
+
+    // === Helper: Get Monday of Current Week ===
+    function getMonday(d) {
+        d = new Date(d);
+        var day = d.getDay(),
+            diff = d.getDate() - day + (day == 0 ? -6 : 1); // adjust when day is sunday
+        return new Date(d.setDate(diff));
+    }
+
+    // === Quick Date Buttons Logic ===
+    document.getElementById('btn-today').addEventListener('click', function () {
+        const today = new Date();
+        const dateStr = formatDateInput(today);
+        document.getElementById('start-date').value = dateStr;
+        document.getElementById('end-date').value = dateStr;
+        fetchTrades(dateStr, dateStr);
+    });
+
+    document.getElementById('btn-week').addEventListener('click', function () {
+        const today = new Date();
+        const monday = getMonday(today);
+        const sunday = new Date(monday);
+        sunday.setDate(monday.getDate() + 6);
+
+        const startStr = formatDateInput(monday);
+        const endStr = formatDateInput(sunday);
+
+        document.getElementById('start-date').value = startStr;
+        document.getElementById('end-date').value = endStr;
+        fetchTrades(startStr, endStr);
+    });
+
+    document.getElementById('btn-last-week').addEventListener('click', function () {
+        const today = new Date();
+        const currentMonday = getMonday(today);
+        const lastMonday = new Date(currentMonday);
+        lastMonday.setDate(currentMonday.getDate() - 7);
+        const lastSunday = new Date(lastMonday);
+        lastSunday.setDate(lastMonday.getDate() + 6);
+
+        const startStr = formatDateInput(lastMonday);
+        const endStr = formatDateInput(lastSunday);
+
+        document.getElementById('start-date').value = startStr;
+        document.getElementById('end-date').value = endStr;
+        fetchTrades(startStr, endStr);
+    });
+
+    document.getElementById('btn-month').addEventListener('click', function () {
+        const today = new Date();
+        const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+        const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+        const startStr = formatDateInput(firstDay);
+        const endStr = formatDateInput(lastDay);
+
+        document.getElementById('start-date').value = startStr;
+        document.getElementById('end-date').value = endStr;
+        fetchTrades(startStr, endStr);
     });
 
     // Sorting logic
