@@ -249,7 +249,7 @@ section {
     background: white;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
     flex: 1 1 250px;
     max-width: 300px;
     text-align: center;
@@ -312,7 +312,7 @@ footer {
 .card {
     background: white;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
     padding: 20px 30px;
     min-width: 200px;
     flex: 1 1 200px;
@@ -355,11 +355,12 @@ footer {
     background: white;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 /* === Layout Fix for Footer Positioning === */
-html, body {
+html,
+body {
     height: 100%;
     margin: 0;
 }
@@ -370,29 +371,40 @@ html, body {
     min-height: 100vh;
 }
 
-.page-wrapper > section {
+.page-wrapper>section {
     flex: 1;
 }
 
 /* ==== DATE RANGE PICKER ==== */
 .date-range-picker {
     display: flex;
+    flex-direction: column;
     align-items: center;
     gap: 12px;
     background: #fff;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
-    padding: 12px 18px;
+    padding: 15px 20px;
     margin: 18px auto 28px auto;
-    box-shadow: 0 2px 8px rgba(0,168,107,0.06);
+    box-shadow: 0 2px 8px rgba(0, 168, 107, 0.06);
     width: fit-content;
     justify-content: center;
 }
+
+.date-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
 .date-range-picker label {
     font-weight: 500;
     color: #00a86b;
     margin-right: 4px;
 }
+
 .date-range-picker input[type="date"] {
     border: 1px solid #c2e7d9;
     border-radius: 5px;
@@ -402,11 +414,13 @@ html, body {
     background: #f4f7f9;
     transition: border 0.2s, box-shadow 0.2s;
 }
+
 .date-range-picker input[type="date"]:focus {
     border: 1.5px solid #00a86b;
     outline: none;
     box-shadow: 0 0 0 2px #b2f0d6;
 }
+
 .date-range-picker button {
     background: #00a86b;
     color: #fff;
@@ -417,9 +431,11 @@ html, body {
     font-weight: 600;
     cursor: pointer;
     transition: background 0.2s, box-shadow 0.2s;
-    box-shadow: 0 2px 6px rgba(0,168,107,0.08);
+    box-shadow: 0 2px 6px rgba(0, 168, 107, 0.08);
 }
-.date-range-picker button:hover, .date-range-picker button:focus {
+
+.date-range-picker button:hover,
+.date-range-picker button:focus {
     background: #008f5a;
-    box-shadow: 0 4px 12px rgba(0,168,107,0.13);
+    box-shadow: 0 4px 12px rgba(0, 168, 107, 0.13);
 }
