@@ -29,6 +29,12 @@
     font-weight: 600;
     margin-bottom: 8px;
     color: #1e1e2f;
+    background-color: rgba(0, 168, 107, 0.1);
+    /* Light green background */
+    padding: 10px;
+    border-radius: 6px;
+    border-left: 4px solid #00a86b;
+    /* Green accent border */
 }
 
 .form-group input,
