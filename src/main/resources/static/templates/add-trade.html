@@ -35,6 +35,7 @@
             <input type="hidden" id="instrument" name="instrument" required>
             <div class="selection-group" data-input-id="instrument">
                 <button type="button" class="option-btn" data-value="Gold">Gold</button>
+                <button type="button" class="option-btn" data-value="CrudeOil">Crude Oil</button>
                 <button type="button" class="option-btn" data-value="BTC">BTC</button>
                 <button type="button" class="option-btn" data-value="ETH">ETH</button>
                 <button type="button" class="option-btn" data-value="USD/CAD">USD/CAD</button>
@@ -43,6 +44,7 @@
                 <button type="button" class="option-btn" data-value="EUR/USD">EUR/USD</button>
                 <button type="button" class="option-btn" data-value="AUD/USD">AUD/USD</button>
                 <button type="button" class="option-btn" data-value="GBP/USD">GBP/USD</button>
+                <button type="button" class="option-btn" data-value="EUR/JPY">EUR/JPY</button>
                 <button type="button" class="option-btn" data-value="NAS100">NAS100</button>
                 <button type="button" class="option-btn" data-value="Other" data-toggle="other">Other</button>
             </div>
@@ -63,7 +65,6 @@
             <label for="quantity">Quantity <span style="color: red;">*</span></label>
             <input type="hidden" id="quantity" name="quantity" required>
             <div class="selection-group" data-input-id="quantity">
-                <button type="button" class="option-btn" data-value="0.05">0.05</button>
                 <button type="button" class="option-btn" data-value="0.1">0.1</button>
                 <button type="button" class="option-btn" data-value="0.15">0.15</button>
                 <button type="button" class="option-btn" data-value="0.2">0.2</button>
@@ -72,6 +73,7 @@
                 <button type="button" class="option-btn" data-value="1">1</button>
                 <button type="button" class="option-btn" data-value="2">2</button>
                 <button type="button" class="option-btn" data-value="5">5</button>
+                <button type="button" class="option-btn" data-value="10">10</button>
                 <button type="button" class="option-btn" data-value="Other" data-toggle="other">Other</button>
             </div>
             <input type="number" step="0.01" id="otherQuantity" name="otherQuantity" placeholder="Enter quantity" required
@@ -79,20 +81,18 @@
         </div>
 
         <div class="form-group">
-            <label for="risk">Risk $ <span style="color: red;">*</span></label>
+            <label for="risk">Risk <span style="color: red;">*</span></label>
             <input type="hidden" id="risk" name="risk" required>
             <div class="selection-group" data-input-id="risk">
-                <button type="button" class="option-btn" data-value="25">25</button>
                 <button type="button" class="option-btn" data-value="50">50</button>
-                <button type="button" class="option-btn" data-value="75">75</button>
                 <button type="button" class="option-btn" data-value="100">100</button>
-                <button type="button" class="option-btn" data-value="125">125</button>
                 <button type="button" class="option-btn" data-value="150">150</button>
-                <button type="button" class="option-btn" data-value="175">175</button>
                 <button type="button" class="option-btn" data-value="200">200</button>
                 <button type="button" class="option-btn" data-value="250">250</button>
                 <button type="button" class="option-btn" data-value="300">300</button>
+                <button type="button" class="option-btn" data-value="400">400</button>
                 <button type="button" class="option-btn" data-value="500">500</button>
+                <button type="button" class="option-btn" data-value="1000">1000</button>
                 <button type="button" class="option-btn" data-value="Other" data-toggle="other">Other</button>
             </div>
             <input type="number" step="0.01" id="otherRisk" name="otherRisk" placeholder="Enter risk" required
@@ -100,20 +100,18 @@
         </div>
 
         <div class="form-group">
-            <label for="reward">Reward $</label>
+            <label for="reward">Reward </label>
             <input type="hidden" id="reward" name="reward">
             <div class="selection-group" data-input-id="reward">
-                <button type="button" class="option-btn" data-value="25">25</button>
                 <button type="button" class="option-btn" data-value="50">50</button>
-                <button type="button" class="option-btn" data-value="75">75</button>
                 <button type="button" class="option-btn" data-value="100">100</button>
-                <button type="button" class="option-btn" data-value="125">125</button>
                 <button type="button" class="option-btn" data-value="150">150</button>
-                <button type="button" class="option-btn" data-value="175">175</button>
                 <button type="button" class="option-btn" data-value="200">200</button>
                 <button type="button" class="option-btn" data-value="250">250</button>
                 <button type="button" class="option-btn" data-value="300">300</button>
+                <button type="button" class="option-btn" data-value="400">400</button>
                 <button type="button" class="option-btn" data-value="500">500</button>
+                <button type="button" class="option-btn" data-value="1000">1000</button>
                 <button type="button" class="option-btn" data-value="Other" data-toggle="other">Other</button>
             </div>
             <input type="number" step="0.01" id="otherReward" name="otherReward" placeholder="Enter reward"
@@ -124,11 +122,11 @@
             <label for="strategy">Strategy Used</label>
             <input type="hidden" id="strategy" name="strategy">
             <div class="selection-group" data-input-id="strategy">
+                <button type="button" class="option-btn" data-value="Price Action">Price Action</button>
                 <button type="button" class="option-btn" data-value="200EMA">200EMA</button>
                 <button type="button" class="option-btn" data-value="Reversal">Reversal</button>
-                <button type="button" class="option-btn" data-value="Reversal and retest">Reversal and retest</button>
                 <button type="button" class="option-btn" data-value="Breakout">Breakout</button>
-                <button type="button" class="option-btn" data-value="Breakout and retest">Breakout and retest</button>
+                <button type="button" class="option-btn" data-value="Pullback">Pullback</button>
                 <button type="button" class="option-btn" data-value="Other" data-toggle="other">Other</button>
             </div>
             <input type="text" id="otherStrategy" name="otherStrategy" placeholder="Enter strategy"
@@ -148,12 +146,12 @@
         </div>
 
         <div class="form-group">
-            <label for="pnl">Profit/Loss $ <span style="color: red;">*</span></label>
+            <label for="pnl">Profit/Loss <span style="color: red;">*</span></label>
             <input type="number" id="pnl" name="pnl" step="0.01" required/>
         </div>
 
         <div class="form-group">
-            <label for="emotion">Emotional State <span style="color: red;">*</span></label>
+            <label for="emotion">Emotional Status <span style="color: red;">*</span></label>
             <input type="hidden" id="emotion" name="emotion" required>
             <div class="selection-group" data-input-id="emotion">
                 <button type="button" class="option-btn" data-value="Calm">Calm</button>
