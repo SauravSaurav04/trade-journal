@@ -66,14 +66,20 @@ document.addEventListener("DOMContentLoaded", async function () {
         document.querySelector('.card:nth-child(3) p').innerText = `${winRate}%`;
 
         // R/R ratio calculation (based on reward/pnl string parsing, optional)
-        const rrRatio = avg(trades.map(t => {
-            const risk = parseFloat(t.risk);
-            const pnl = t.pnl;
+        // R/R ratio calculation (Average Win / Average Loss)
+        const winningTrades = trades.filter(t => t.pnl > 0);
+        const losingTrades = trades.filter(t => t.pnl < 0);
 
-            if (isNaN(risk) || risk === 0 || pnl === null) return 1;
+        const avgWin = winningTrades.length ? sum(winningTrades.map(t => t.pnl)) / winningTrades.length : 0;
+        const avgLoss = losingTrades.length ? Math.abs(sum(losingTrades.map(t => t.pnl))) / losingTrades.length : 0;
 
-            return Math.abs(pnl) / risk;
-        }));
+        let rrRatio = 0;
+        if (avgLoss > 0) {
+            rrRatio = avgWin / avgLoss;
+        } else {
+            rrRatio = avgWin > 0 ? avgWin : 0;
+        }
+
         document.querySelector('.card:nth-child(4) p').innerText = `1:${rrRatio.toFixed(1)}`;
 
         // === Daily Background Plugin ===
