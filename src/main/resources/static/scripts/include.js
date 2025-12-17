@@ -54,7 +54,7 @@ function switchModal(hideId, showId) {
 }
 
 // Close modal if clicked outside
-window.onclick = function(event) {
+window.onclick = function (event) {
     const modals = ["loginModal", "signupModal", "profileModal"];
     modals.forEach(id => {
         const modal = document.getElementById(id);
@@ -94,29 +94,29 @@ function submitLogin() {
         },
         body: `username=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
     })
-    .then(response => {
-        if (response.status === 200 || response.redirected) {
-            sessionStorage.setItem("isLoggedIn", "true");
-            updateAuthUI();
-            const redirectUrl = sessionStorage.getItem("redirectAfterLogin") || "/";
-            sessionStorage.removeItem("redirectAfterLogin");
-            window.location.href = redirectUrl;
-        } else if (response.status === 401) {
-            alert("Invalid email or password.");
-        } else {
-            alert("Something went wrong during login.");
-        }
-    })
-    .catch(err => {
-        console.error("Login error:", err);
-        alert("Something went wrong.");
-    })
-    .finally(() => {
-        if (loginButton) {
-            loginButton.disabled = false;
-            loginButton.textContent = "Login";
-        }
-    });
+        .then(response => {
+            if (response.status === 200 || response.redirected) {
+                sessionStorage.setItem("isLoggedIn", "true");
+                updateAuthUI();
+                const redirectUrl = sessionStorage.getItem("redirectAfterLogin") || "/";
+                sessionStorage.removeItem("redirectAfterLogin");
+                window.location.href = redirectUrl;
+            } else if (response.status === 401) {
+                alert("Invalid email or password.");
+            } else {
+                alert("Something went wrong during login.");
+            }
+        })
+        .catch(err => {
+            console.error("Login error:", err);
+            alert("Something went wrong.");
+        })
+        .finally(() => {
+            if (loginButton) {
+                loginButton.disabled = false;
+                loginButton.textContent = "Login";
+            }
+        });
 }
 
 function logout() {
@@ -147,9 +147,9 @@ function updateAuthUI() {
 }
 
 const ROUTES = {
-  dashboard: '/templates/dashboard.html',
-  addTrade: '/templates/add-trade.html',
-  history: '/templates/trade-history.html',
+    dashboard: '/templates/dashboard.html',
+    addTrade: '/templates/add-trade.html',
+    history: '/templates/trade-history.html',
 };
 
 function submitSignup() {
@@ -219,23 +219,23 @@ function submitSignup() {
             password: password
         })
     })
-    .then(response => {
-        if (response.ok) {
-            alert("Registration successful! Please log in.");
-            switchModal("signupModal", "loginModal");
-        } else if (response.status === 409) {
-            alert("A user with this email already exists.");
-        } else {
-            alert("Registration failed. Please try again.");
-        }
-    })
-    .catch(err => {
-        console.error("Error during signup:", err);
-        alert("Something went wrong. Please try again.");
-    })
-    .finally(() => {
-        resetSignupButton();
-    });
+        .then(response => {
+            if (response.ok) {
+                alert("Registration successful! Please log in.");
+                switchModal("signupModal", "loginModal");
+            } else if (response.status === 409) {
+                alert("A user with this email already exists.");
+            } else {
+                alert("Registration failed. Please try again.");
+            }
+        })
+        .catch(err => {
+            console.error("Error during signup:", err);
+            alert("Something went wrong. Please try again.");
+        })
+        .finally(() => {
+            resetSignupButton();
+        });
 }
 
 function resetSignupButton() {
@@ -248,12 +248,13 @@ function resetSignupButton() {
 
 function addLoginEnterKeyListener() {
     if (loginKeyListenerAdded) return;
-    loginKeyListenerAdded = true;
 
     const emailInput = document.getElementById("loginEmail");
     const passwordInput = document.getElementById("loginPassword");
 
     if (!emailInput || !passwordInput) return;
+
+    loginKeyListenerAdded = true;
 
     const handleEnterKey = (event) => {
         if (event.key === "Enter") {
@@ -268,7 +269,6 @@ function addLoginEnterKeyListener() {
 
 function addSignupEnterKeyListener() {
     if (signupKeyListenerAdded) return;
-    signupKeyListenerAdded = true;
 
     const nameInput = document.getElementById("signupName");
     const emailInput = document.getElementById("signupEmail");
@@ -276,6 +276,8 @@ function addSignupEnterKeyListener() {
     const confirmInput = document.getElementById("signupConfirm");
 
     if (!nameInput || !emailInput || !passwordInput || !confirmInput) return;
+
+    signupKeyListenerAdded = true;
 
     const handleEnterKey = (event) => {
         if (event.key === "Enter") {
@@ -297,19 +299,19 @@ function getUserDetails() {
             "Content-Type": "application/json"
         }
     })
-    .then(response => {
-        if (response.ok) {
-            return response.json();
-        } else {
-            throw new Error("Failed to fetch user details");
-        }
-    })
-    .then(data => {
-        sessionStorage.setItem("userName", data.name);
-        sessionStorage.setItem("userEmail", data.email);
-        updateAuthUI();
-    })
-    .catch(err => {
-        console.error("Error fetching user details:", err);
-    });
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error("Failed to fetch user details");
+            }
+        })
+        .then(data => {
+            sessionStorage.setItem("userName", data.name);
+            sessionStorage.setItem("userEmail", data.email);
+            updateAuthUI();
+        })
+        .catch(err => {
+            console.error("Error fetching user details:", err);
+        });
 }
