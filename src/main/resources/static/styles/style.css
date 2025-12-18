@@ -203,14 +203,24 @@ nav {
     color: #333;
 }
 
+/* ==== HERO HEADER ==== */
+.hero-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 25vh;
+    /* Shift content up to reduce visual top gap */
+    box-sizing: border-box;
+}
+
 /* ==== HEADER ==== */
 header {
     background-color: rgba(30, 30, 47, 0.25);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(50px);
     color: white;
     padding: 60px 20px 40px;
     text-align: center;
-    margin-top: 50px;
     border-radius: 15px;
     max-width: 900px;
     margin-left: auto;
@@ -254,10 +264,11 @@ section {
 #about,
 #features {
     background: rgba(30, 30, 47, 0.25);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(50px);
     border-radius: 16px;
     border: 1px solid rgba(255, 255, 255, 0.1);
-    margin-bottom: 40px;
+    margin-bottom: 50px;
+    /* Consistent gap */
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
     color: #fff;
     text-align: center;
