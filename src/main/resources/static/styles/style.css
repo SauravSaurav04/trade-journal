@@ -4,7 +4,8 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f4f7f9;
     color: #1e1e2f;
-    background-image: linear-gradient(rgba(10, 10, 20, 0.25), rgba(10, 10, 20, 0.25)), url('../images/bg_img.png');
+    color: #1e1e2f;
+    background-image: url('../images/bg_img.png');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -204,28 +205,28 @@ nav {
 
 /* ==== HEADER ==== */
 header {
-    background-color: transparent;
+    background-color: rgba(30, 30, 47, 0.25);
+    backdrop-filter: blur(10px);
     color: white;
     padding: 60px 20px 40px;
     text-align: center;
     margin-top: 50px;
+    border-radius: 15px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 header h1 {
     margin: 0;
-    font-size: 3.5em;
-    /* Slightly larger for impact */
-    font-weight: 700;
+    font-size: 3em;
 }
 
 header p {
-    margin: 15px 0 30px;
-    font-size: 1.3em;
-    color: #e0e0e0;
-    /* Softer white for subtext */
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 10px 0 20px;
+    font-size: 1.2em;
+    color: #f0f0f5;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 .cta-button {
@@ -252,8 +253,12 @@ section {
 
 #about,
 #features {
-    background: transparent;
+    background: rgba(30, 30, 47, 0.25);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
     margin-bottom: 40px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
     color: #fff;
     text-align: center;
 }
@@ -262,16 +267,16 @@ section {
 #features h2 {
     color: #00a86b;
     text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: 20px;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 #about p {
-    font-size: 1.15em;
-    line-height: 1.8;
+    font-size: 1.1em;
+    line-height: 1.6;
     max-width: 800px;
     margin: 0 auto;
-    color: #e0e0e0;
+    color: #f1f1f1;
 }
 
 .features {
