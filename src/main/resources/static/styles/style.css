@@ -4,7 +4,12 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f4f7f9;
     color: #1e1e2f;
+    background-image: linear-gradient(rgba(10, 10, 20, 0.25), rgba(10, 10, 20, 0.25)), url('../images/bg_img.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
 }
+
 
 /* ==== NAVIGATION BAR ==== */
 nav {
@@ -199,21 +204,28 @@ nav {
 
 /* ==== HEADER ==== */
 header {
-    background-color: #1e1e2f;
+    background-color: transparent;
     color: white;
     padding: 60px 20px 40px;
     text-align: center;
+    margin-top: 50px;
 }
 
 header h1 {
     margin: 0;
-    font-size: 3em;
+    font-size: 3.5em;
+    /* Slightly larger for impact */
+    font-weight: 700;
 }
 
 header p {
-    margin: 10px 0 20px;
-    font-size: 1.2em;
-    color: #c5c5d0;
+    margin: 15px 0 30px;
+    font-size: 1.3em;
+    color: #e0e0e0;
+    /* Softer white for subtext */
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .cta-button {
@@ -238,6 +250,30 @@ section {
     margin: 0 auto;
 }
 
+#about,
+#features {
+    background: transparent;
+    margin-bottom: 40px;
+    color: #fff;
+    text-align: center;
+}
+
+#about h2,
+#features h2 {
+    color: #00a86b;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+
+#about p {
+    font-size: 1.15em;
+    line-height: 1.8;
+    max-width: 800px;
+    margin: 0 auto;
+    color: #e0e0e0;
+}
+
 .features {
     display: flex;
     flex-wrap: wrap;
@@ -246,17 +282,29 @@ section {
 }
 
 .feature-card {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    /* Softer, deeper shadow */
     flex: 1 1 250px;
     max-width: 300px;
     text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
 }
 
 .feature-card h3 {
     margin-top: 0;
+    color: #1e1e2f;
+}
+
+.feature-card p {
+    color: #1e1e2f;
 }
 
 /* ==== FOOTER ==== */
