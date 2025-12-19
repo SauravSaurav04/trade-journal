@@ -505,3 +505,12 @@ body {
     background: #008f5a;
     box-shadow: 0 4px 12px rgba(0, 168, 107, 0.13);
 }
+
+/* ==== UTILITIES ==== */
+.text-red {
+    color: red;
+}
+
+.hidden {
+    display: none;
+}
