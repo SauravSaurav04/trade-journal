@@ -209,7 +209,7 @@ nav {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-bottom: 25vh;
+    padding-bottom: 10vh;
     /* Shift content up to reduce visual top gap */
     box-sizing: border-box;
 }
