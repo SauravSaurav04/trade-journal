@@ -65,7 +65,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         document.querySelector('.card:nth-child(2) p').className = totalProfit >= 0 ? 'positive' : 'negative';
         document.querySelector('.card:nth-child(3) p').innerText = `${winRate}%`;
 
-        // R/R ratio calculation (based on reward/pnl string parsing, optional)
         // R/R ratio calculation (Average Win / Average Loss)
         const winningTrades = trades.filter(t => t.pnl > 0);
         const losingTrades = trades.filter(t => t.pnl < 0);

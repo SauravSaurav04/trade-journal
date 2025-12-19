@@ -64,7 +64,7 @@ canvas {
     height: 500px !important;
 }
 
-/* Add to styles/dashboard.css */
+
 
 .chart-row {
     display: flex;
@@ -109,7 +109,6 @@ canvas {
     border-radius: 4px;
     transition: background-color 0.2s;
     margin: 0 22.5%;
-    /* Moved from inline style */
 }
 
 #calendar-prev:hover,

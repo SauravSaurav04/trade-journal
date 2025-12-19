@@ -212,7 +212,6 @@ nav {
     align-items: center;
     justify-content: center;
     padding-bottom: 10vh;
-    /* Shift content up to reduce visual top gap */
     box-sizing: border-box;
 }
 
@@ -304,7 +303,6 @@ section {
     padding: 25px;
     border-radius: 12px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    /* Softer, deeper shadow */
     flex: 1 1 250px;
     max-width: 300px;
     text-align: center;

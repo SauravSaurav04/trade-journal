@@ -1,6 +1,5 @@
 var loginKeyListenerAdded = false;
 var signupKeyListenerAdded = false;
-// Include HTML content dynamically
 function includeHTML() {
     const elements = document.querySelectorAll('[data-include]');
     elements.forEach(el => {
@@ -53,7 +52,6 @@ function switchModal(hideId, showId) {
     document.getElementById(showId).style.display = "flex";
 }
 
-// Close modal if clicked outside
 window.onclick = function (event) {
     const modals = ["loginModal", "signupModal", "profileModal"];
     modals.forEach(id => {
