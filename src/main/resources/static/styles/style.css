@@ -63,7 +63,7 @@ nav {
 
 .auth-buttons a {
     padding: 8px 16px;
-    border: 1px solid #1e1e2f;
+    border: 1px solid #ffffff;
     border-radius: 4px;
     text-decoration: none;
     font-size: 0.9em;
@@ -72,31 +72,31 @@ nav {
 }
 
 .auth-buttons .login {
-    color: #1e1e2f;
+    color: #ffffff;
     background-color: transparent;
 }
 
 .auth-buttons .login:hover {
-    background-color: #1e1e2f;
+    background-color: rgba(255, 255, 255, 0.1);
     color: #fff;
 }
 
 .auth-buttons .signup {
-    background-color: #1e1e2f;
-    color: #fff;
+    background-color: #ffffff;
+    color: #00a86b;
 }
 
 .auth-buttons .signup:hover {
-    background-color: #151522;
+    background-color: #f0f0f0;
 }
 
 .auth-buttons .profile {
-    background-color: #1e1e2f;
-    color: #fff;
+    background-color: #ffffff;
+    color: #00a86b;
 }
 
 .auth-buttons .profile:hover {
-    background-color: #151522;
+    background-color: #f0f0f0;
 }
 
 /* ==== MODALS ==== */
@@ -221,7 +221,7 @@ header {
     background-color: rgba(30, 30, 47, 0.25);
     backdrop-filter: blur(50px);
     color: white;
-    padding: 60px 20px 40px;
+    padding: 40px 20px 40px;
     text-align: center;
     border-radius: 15px;
     max-width: 900px;
@@ -258,7 +258,7 @@ header p {
 
 /* ==== SECTIONS ==== */
 section {
-    padding: 60px 20px;
+    padding: 40px 20px;
     max-width: 1000px;
     margin: 0 auto;
 }
@@ -278,7 +278,7 @@ section {
 
 #about h2,
 #features h2 {
-    color: #00a86b;
+    color: #ffffff;
     text-transform: uppercase;
     letter-spacing: 1px;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
