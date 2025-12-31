@@ -157,3 +157,19 @@ input[type="range"]::-moz-range-thumb {
     color: white;
     border-color: #00a86b;
 }
+
+.discipline-score-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.discipline-slider {
+    flex-grow: 1;
+}
+
+/* Styles for "Other" input fields */
+.other-input {
+    display: none;
+    margin-top: 10px;
+}
