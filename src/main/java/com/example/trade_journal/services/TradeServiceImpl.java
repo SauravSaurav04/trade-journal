@@ -43,16 +43,23 @@ public class TradeServiceImpl implements TradeService {
     @Override
     public List<Trade> getAllTrades() {
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        return tradeRepository.findByUserEmail(userEmail);
+        return tradeRepository.findByUserEmailAndStatus(userEmail, "PUBLISHED");
+    }
+
+    @Override
+    public List<Trade> getDraftTrades() {
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        return tradeRepository.findByUserEmailAndStatus(userEmail, "DRAFT");
     }
 
     @Override
     public List<Trade> getAllTrades(LocalDate startDate, LocalDate endDate) {
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         if (startDate != null && endDate != null) {
-            return tradeRepository.findByUserEmailAndTradeDateBetween(userEmail, startDate, endDate);
+            return tradeRepository.findByUserEmailAndStatusAndTradeDateBetween(userEmail, "PUBLISHED", startDate,
+                    endDate);
         } else {
-            return tradeRepository.findByUserEmail(userEmail);
+            return tradeRepository.findByUserEmailAndStatus(userEmail, "PUBLISHED");
         }
     }
 }

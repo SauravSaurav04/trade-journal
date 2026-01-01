@@ -6,6 +6,7 @@
             <a onclick="navigateIfLoggedIn(ROUTES.dashboard)">Dashboard</a>
             <a onclick="navigateIfLoggedIn(ROUTES.addTrade)">Add Trade</a>
             <a onclick="navigateIfLoggedIn(ROUTES.history)">Trade History</a>
+            <a onclick="navigateIfLoggedIn('/templates/drafts.html')">Drafts</a>
         </div>
         <div class="auth-buttons">
             <a class="login" id="loginLink" onclick="openLogin()">Login</a>
@@ -20,8 +21,8 @@
     <div class="modal-content">
         <span class="close-btn" onclick="closeModal('loginModal')">&times;</span>
         <h2>Login</h2>
-        <input type="email" id="loginEmail" placeholder="Email" required/>
-        <input type="password" id="loginPassword" placeholder="Password" required/>
+        <input type="email" id="loginEmail" placeholder="Email" required />
+        <input type="password" id="loginPassword" placeholder="Password" required />
         <button id="loginButton" onclick="submitLogin()">Login</button>
         <p>Don't have an account? <a onclick="switchModal('loginModal', 'signupModal')">Sign up</a></p>
     </div>
@@ -32,10 +33,10 @@
     <div class="modal-content">
         <span class="close-btn" onclick="closeModal('signupModal')">&times;</span>
         <h2>Create an Account</h2>
-        <input type="text" id="signupName" placeholder="Full Name" required/>
-        <input type="email" id="signupEmail" placeholder="Email" required/>
-        <input type="password" id="signupPassword" placeholder="Password" required/>
-        <input type="password" id="signupConfirm" placeholder="Confirm Password" required/>
+        <input type="text" id="signupName" placeholder="Full Name" required />
+        <input type="email" id="signupEmail" placeholder="Email" required />
+        <input type="password" id="signupPassword" placeholder="Password" required />
+        <input type="password" id="signupConfirm" placeholder="Confirm Password" required />
         <button id="signupButton" onclick="submitSignup()">Sign Up</button>
         <p>Already have an account? <a onclick="switchModal('signupModal', 'loginModal')">Log in</a></p>
     </div>

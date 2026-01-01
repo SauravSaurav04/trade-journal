@@ -58,4 +58,6 @@ public class Trade {
 
     private String notes;
 
+    private String status;
+
 }

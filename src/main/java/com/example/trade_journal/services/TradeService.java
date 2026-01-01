@@ -11,5 +11,7 @@ public interface TradeService {
 
     List<Trade> getAllTrades();
 
+    List<Trade> getDraftTrades();
+
     List<Trade> getAllTrades(LocalDate startDate, LocalDate endDate);
 }
