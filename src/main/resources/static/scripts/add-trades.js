@@ -22,7 +22,7 @@ const tradeId = urlParams.get('id');
 let isDraft = false;
 
 document.addEventListener("DOMContentLoaded", () => {
-    
+
     // Check if we are editing a draft
     if (tradeId) {
         document.querySelector("h2").innerText = "Complete Trade";
@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Wait, the prompt said: "Add logic on page load to check if ?id=... exists... fetch that specific trade and pre-fill".
         // Use existing GET APIs? We have getAllTrades and getDrafts. 
         // We can fetch from getDrafts and find the one with matching ID.
-        
+
         loadDraftDetails(tradeId);
     }
 
@@ -116,40 +116,40 @@ async function loadDraftDetails(id) {
                 document.getElementById("exitReason").value = trade.exitReason || "";
                 document.getElementById("mistakes").value = trade.mistakes || "";
                 document.getElementById("notes").value = trade.notes || "";
-                
+
                 // Helper to click buttons
                 const selectButton = (inputId, value) => {
-                     const group = document.querySelector(`.selection-group[data-input-id="${inputId}"]`);
-                     if(group) {
-                         const btn = group.querySelector(`.option-btn[data-value="${value}"]`);
-                         if(btn) btn.click();
-                         else {
-                             // Handle "Other"
-                             const otherBtn = group.querySelector(`.option-btn[data-value="Other"]`);
-                             if(otherBtn) {
-                                 otherBtn.click();
-                                 const otherInput = document.getElementById("other" + inputId.charAt(0).toUpperCase() + inputId.slice(1));
-                                 if(otherInput) otherInput.value = value;
-                             }
-                         }
-                     }
+                    const group = document.querySelector(`.selection-group[data-input-id="${inputId}"]`);
+                    if (group) {
+                        const btn = group.querySelector(`.option-btn[data-value="${value}"]`);
+                        if (btn) btn.click();
+                        else {
+                            // Handle "Other"
+                            const otherBtn = group.querySelector(`.option-btn[data-value="Other"]`);
+                            if (otherBtn) {
+                                otherBtn.click();
+                                const otherInput = document.getElementById("other" + inputId.charAt(0).toUpperCase() + inputId.slice(1));
+                                if (otherInput) otherInput.value = value;
+                            }
+                        }
+                    }
                 };
-                
-                if(trade.instrument) selectButton("instrument", trade.instrument);
-                if(trade.tradeType) selectButton("tradeType", trade.tradeType);
-                if(trade.quantity) selectButton("quantity", trade.quantity);
-                if(trade.risk) selectButton("risk", trade.risk);
-                if(trade.reward) selectButton("reward", trade.reward);
-                if(trade.strategy) selectButton("strategy", trade.strategy);
-                if(trade.emotion) selectButton("emotion", trade.emotion);
-                
+
+                if (trade.instrument) selectButton("instrument", trade.instrument);
+                if (trade.tradeType) selectButton("tradeType", trade.tradeType);
+                if (trade.quantity) selectButton("quantity", trade.quantity);
+                if (trade.risk) selectButton("risk", trade.risk);
+                if (trade.reward) selectButton("reward", trade.reward);
+                if (trade.strategy) selectButton("strategy", trade.strategy);
+                if (trade.emotion) selectButton("emotion", trade.emotion);
+
                 // Radios
-                if(trade.entrySetup) document.querySelector(`input[name="entrySetup"][value="${trade.entrySetup}"]`).checked = true;
-                if(trade.exitDiscipline) document.querySelector(`input[name="exitDiscipline"][value="${trade.exitDiscipline}"]`).checked = true;
-                if(trade.correctQuantity) document.querySelector(`input[name="correctQuantity"][value="${trade.correctQuantity}"]`).checked = true;
-                if(trade.calculatedRisk) document.querySelector(`input[name="calculatedRisk"][value="${trade.calculatedRisk}"]`).checked = true;
-                if(trade.emotionDiscipline) document.querySelector(`input[name="emotionDiscipline"][value="${trade.emotionDiscipline}"]`).checked = true;
-                
+                if (trade.entrySetup) document.querySelector(`input[name="entrySetup"][value="${trade.entrySetup}"]`).checked = true;
+                if (trade.exitDiscipline) document.querySelector(`input[name="exitDiscipline"][value="${trade.exitDiscipline}"]`).checked = true;
+                if (trade.correctQuantity) document.querySelector(`input[name="correctQuantity"][value="${trade.correctQuantity}"]`).checked = true;
+                if (trade.calculatedRisk) document.querySelector(`input[name="calculatedRisk"][value="${trade.calculatedRisk}"]`).checked = true;
+                if (trade.emotionDiscipline) document.querySelector(`input[name="emotionDiscipline"][value="${trade.emotionDiscipline}"]`).checked = true;
+
                 updateDisciplineScore();
             }
         }
@@ -163,13 +163,77 @@ document.querySelector("form").addEventListener("submit", async (e) => {
 
     // Manual Validation for Hidden Inputs - ONLY IF NOT DRAFT
     if (!isDraft) {
-        const requiredIds = ["instrument", "tradeType", "quantity", "risk", "emotion"];
-        for (const id of requiredIds) {
-            const input = document.getElementById(id);
-            if (input && !input.value) {
-                alert(`Please select a value for ${id.charAt(0).toUpperCase() + id.slice(1)}`);
-                const group = document.querySelector(`.selection-group[data-input-id="${id}"]`);
+        // Helper to alert and focus/scroll
+        const alertAndFocus = (msg, elementId, isSelectionGroup = false) => {
+            alert(msg);
+            if (isSelectionGroup) {
+                const group = document.querySelector(`.selection-group[data-input-id="${elementId}"]`);
                 if (group) group.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else {
+                const el = document.getElementById(elementId);
+                if (el) {
+                    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    el.focus();
+                }
+            }
+        };
+
+        // 1. Date
+        if (!document.getElementById("tradeDate").value) {
+            alertAndFocus("Please enter Date of Trade", "tradeDate");
+            return;
+        }
+
+        // 2. Instrument
+        if (!document.getElementById("instrument").value) {
+            alertAndFocus("Please select Instrument Name", "instrument", true);
+            return;
+        }
+
+        // 3. Trade Type
+        if (!document.getElementById("tradeType").value) {
+            alertAndFocus("Please select Trade Type", "tradeType", true);
+            return;
+        }
+
+        // 4. Quantity
+        if (!document.getElementById("quantity").value) {
+            alertAndFocus("Please select Quantity", "quantity", true);
+            return;
+        }
+
+        // 5. Risk
+        if (!document.getElementById("risk").value) {
+            alertAndFocus("Please select Risk", "risk", true);
+            return;
+        }
+
+        // 6. Profit/Loss
+        if (!document.getElementById("pnl").value) {
+            alertAndFocus("Please enter Profit/Loss", "pnl");
+            return;
+        }
+
+        // 7. Emotional Status
+        if (!document.getElementById("emotion").value) {
+            alertAndFocus("Please select Emotional Status", "emotion", true);
+            return;
+        }
+
+        // 8. Discipline Checklist
+        const disciplineFields = [
+            { name: "entrySetup", label: "Entered on Setup" },
+            { name: "exitDiscipline", label: "Fixed Stop Loss" },
+            { name: "correctQuantity", label: "Calculated Quantity" },
+            { name: "calculatedRisk", label: "Calculated Risk" },
+            { name: "emotionDiscipline", label: "Emotion Controlled" }
+        ];
+
+        for (const field of disciplineFields) {
+            if (!document.querySelector(`input[name="${field.name}"]:checked`)) {
+                alert(`Please select YES or NO for: ${field.label}`);
+                const item = document.querySelector(`input[name="${field.name}"]`).closest('.discipline-item');
+                if (item) item.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 return;
             }
         }
@@ -181,10 +245,10 @@ document.querySelector("form").addEventListener("submit", async (e) => {
 
     const formData = new FormData(e.target);
     const plainData = Object.fromEntries(formData.entries());
-    
+
     // Add status
     plainData.status = isDraft ? "DRAFT" : "PUBLISHED";
-    
+
     // Include ID if editing
     if (tradeId) {
         plainData.id = tradeId;
