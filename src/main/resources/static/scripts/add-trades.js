@@ -262,7 +262,7 @@ document.querySelector("form").addEventListener("submit", async (e) => {
         });
 
         if (response.ok) {
-            alert(isDraft ? "Trade Saved as Draft!" : "Trade Published!");
+            alert(isDraft ? "Trade Saved as Draft!" : "Trade Saved!");
             location.href = isDraft ? "/templates/drafts.html" : "/templates/trade-history.html";
         } else {
             const errorText = await response.text();

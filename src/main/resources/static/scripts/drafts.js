@@ -30,7 +30,7 @@ function renderTable(trades) {
             <td>${trade.tradeType || "-"}</td>
             <td>${trade.quantity || "-"}</td>
             <td>
-                <button class="edit-btn" onclick="editDraft(${trade.id})" style="padding: 5px 10px; cursor: pointer; background-color: #007bff; color: white; border: none; border-radius: 4px;">Complete Trade</button>
+                <button class="edit-btn" onclick="editDraft(${trade.id})" style="padding: 5px 10px; cursor: pointer; background-color: #00a86b; color: white; border: none; border-radius: 4px;">Complete Trade</button>
             </td>
         `;
 
