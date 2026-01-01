@@ -6,7 +6,8 @@
             <a onclick="navigateIfLoggedIn(ROUTES.dashboard)">Dashboard</a>
             <a onclick="navigateIfLoggedIn(ROUTES.addTrade)">Add Trade</a>
             <a onclick="navigateIfLoggedIn(ROUTES.history)">Trade History</a>
-            <a onclick="navigateIfLoggedIn('/templates/drafts.html')">Drafts</a>
+            <a id="draftsNavBtn" onclick="navigateIfLoggedIn('/templates/drafts.html')"
+                style="display: none;">Drafts</a>
         </div>
         <div class="auth-buttons">
             <a class="login" id="loginLink" onclick="openLogin()">Login</a>
