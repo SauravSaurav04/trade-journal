@@ -11,9 +11,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     let chartDiscipline = null;
 
     async function loadTrades(startDate, endDate) {
-        let url = "/getAllTrades";
+        let url = "/getAllTrades?sort=asc";
         if (startDate && endDate) {
-            url += `?startDate=${startDate}&endDate=${endDate}`;
+            url += `&startDate=${startDate}&endDate=${endDate}`;
         }
         const response = await fetch(url);
         const trades = await response.json();

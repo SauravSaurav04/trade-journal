@@ -42,24 +42,43 @@ public class TradeServiceImpl implements TradeService {
 
     @Override
     public List<Trade> getAllTrades() {
+        return getAllTrades("desc");
+    }
+
+    @Override
+    public List<Trade> getAllTrades(String sort) {
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        return tradeRepository.findByUserEmailAndStatus(userEmail, "PUBLISHED");
+        if ("asc".equalsIgnoreCase(sort)) {
+            return tradeRepository.findByUserEmailAndStatusOrderByIdAsc(userEmail, "PUBLISHED");
+        } else {
+            return tradeRepository.findByUserEmailAndStatusOrderByIdDesc(userEmail, "PUBLISHED");
+        }
     }
 
     @Override
     public List<Trade> getDraftTrades() {
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        return tradeRepository.findByUserEmailAndStatus(userEmail, "DRAFT");
+        return tradeRepository.findByUserEmailAndStatusOrderByIdDesc(userEmail, "DRAFT");
     }
 
     @Override
     public List<Trade> getAllTrades(LocalDate startDate, LocalDate endDate) {
+        return getAllTrades(startDate, endDate, "desc");
+    }
+
+    @Override
+    public List<Trade> getAllTrades(LocalDate startDate, LocalDate endDate, String sort) {
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         if (startDate != null && endDate != null) {
-            return tradeRepository.findByUserEmailAndStatusAndTradeDateBetween(userEmail, "PUBLISHED", startDate,
-                    endDate);
+            if ("asc".equalsIgnoreCase(sort)) {
+                return tradeRepository.findByUserEmailAndStatusAndTradeDateBetweenOrderByIdAsc(userEmail, "PUBLISHED",
+                        startDate, endDate);
+            } else {
+                return tradeRepository.findByUserEmailAndStatusAndTradeDateBetweenOrderByIdDesc(userEmail, "PUBLISHED",
+                        startDate, endDate);
+            }
         } else {
-            return tradeRepository.findByUserEmailAndStatus(userEmail, "PUBLISHED");
+            return getAllTrades(sort);
         }
     }
 }
