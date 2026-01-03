@@ -25,6 +25,12 @@ document.addEventListener("DOMContentLoaded", () => {
         trades.forEach((trade, index) => {
             const row = document.createElement("tr");
             const disciplineScore = trade.entrySetup + trade.exitDiscipline + trade.correctQuantity + trade.calculatedRisk + trade.emotionDiscipline;
+            let rrRatio = "0";
+            if (trade.risk !== 0) {
+                const ratio = trade.pnl / trade.risk;
+                rrRatio = `1 : ${ratio.toFixed(1)}`; // Show 1 decimal place
+            }
+
             row.innerHTML = `
                 <td>${index + 1}</td>
                 <td>${trade.tradeDate}</td>
@@ -32,9 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <td>${trade.tradeType}</td>
                 <td>${trade.quantity}</td>
                 <td>${trade.risk}</td>
-                <td>${trade.reward}</td>
-                <td>${trade.strategy}</td>
-                <td>${trade.emotion}</td>
+                <td>${rrRatio}</td>
                 <td>${disciplineScore}</td>
                 <td class="${trade.pnl >= 0 ? 'positive' : 'negative'}">
                     ${trade.pnl >= 0 ? '+' : ''}${trade.pnl.toFixed(2)}
