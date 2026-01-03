@@ -27,16 +27,10 @@ public class TradeController {
         }
     }
 
-    @GetMapping("/getDrafts")
-    public List<Trade> getDraftTrades() {
-        return tradeService.getDraftTrades();
-    }
-
     @GetMapping("/getAllTrades")
-    public List<Trade> getAllTrades(
-            @RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-            @RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
-            @RequestParam(value = "sort", defaultValue = "desc") String sort) {
+    public List<Trade> getAllTrades(@RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                                    @RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+                                    @RequestParam(value = "sort", defaultValue = "desc") String sort) {
         if (startDate != null && endDate != null) {
             return tradeService.getAllTrades(startDate, endDate, sort);
         } else {
@@ -44,4 +38,8 @@ public class TradeController {
         }
     }
 
+    @GetMapping("/getDrafts")
+    public List<Trade> getDraftTrades() {
+        return tradeService.getDraftTrades();
+    }
 }

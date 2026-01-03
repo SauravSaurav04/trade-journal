@@ -41,11 +41,6 @@ public class TradeServiceImpl implements TradeService {
     }
 
     @Override
-    public List<Trade> getAllTrades() {
-        return getAllTrades("desc");
-    }
-
-    @Override
     public List<Trade> getAllTrades(String sort) {
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         if ("asc".equalsIgnoreCase(sort)) {
@@ -53,17 +48,6 @@ public class TradeServiceImpl implements TradeService {
         } else {
             return tradeRepository.findByUserEmailAndStatusOrderByIdDesc(userEmail, "PUBLISHED");
         }
-    }
-
-    @Override
-    public List<Trade> getDraftTrades() {
-        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        return tradeRepository.findByUserEmailAndStatusOrderByIdDesc(userEmail, "DRAFT");
-    }
-
-    @Override
-    public List<Trade> getAllTrades(LocalDate startDate, LocalDate endDate) {
-        return getAllTrades(startDate, endDate, "desc");
     }
 
     @Override
@@ -80,5 +64,11 @@ public class TradeServiceImpl implements TradeService {
         } else {
             return getAllTrades(sort);
         }
+    }
+
+    @Override
+    public List<Trade> getDraftTrades() {
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        return tradeRepository.findByUserEmailAndStatusOrderByIdDesc(userEmail, "DRAFT");
     }
 }
