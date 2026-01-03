@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         // === Metrics ===
         const totalTrades = trades.length;
         const totalProfit = sum(trades.map(t => t.pnl)).toFixed(2);
-        const wins = trades.filter(t => t.pnl > 0).length;
+        const wins = trades.filter(t => t.pnl >= 0).length;
         const losses = totalTrades - wins;
         const winRate = totalTrades ? ((wins / totalTrades) * 100).toFixed(1) : 0;
 
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         document.querySelector('.card:nth-child(3) p').innerText = `${winRate}%`;
 
         // R/R ratio calculation (Average Win / Average Loss)
-        const winningTrades = trades.filter(t => t.pnl > 0);
+        const winningTrades = trades.filter(t => t.pnl >= 0);
         const losingTrades = trades.filter(t => t.pnl < 0);
 
         const avgWin = winningTrades.length ? sum(winningTrades.map(t => t.pnl)) / winningTrades.length : 0;
