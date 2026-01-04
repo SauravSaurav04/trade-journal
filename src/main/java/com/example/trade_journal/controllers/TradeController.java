@@ -26,7 +26,8 @@ public class TradeController {
     public ResponseEntity<?> saveTrade(@RequestPart("data") Trade trade,
                                        @RequestPart(value = "entryChartScreenshot", required = false) MultipartFile entryChartScreenshot,
                                        @RequestPart(value = "exitChartScreenshot", required = false) MultipartFile exitChartScreenshot,
-                                       @RequestPart(value = "video", required = false) MultipartFile video) {
+                                       @RequestPart(value = "entryVideo", required = false) MultipartFile entryVideo,
+                                       @RequestPart(value = "exitVideo", required = false) MultipartFile exitVideo) {
 
         if (entryChartScreenshot != null && !entryChartScreenshot.isEmpty()) {
             String entryUrl = cloudinaryService.uploadFile(entryChartScreenshot);
@@ -38,9 +39,14 @@ public class TradeController {
             trade.setExitChartUrl(exitUrl);
         }
 
-        if (video != null && !video.isEmpty()) {
-            String videoUrl = cloudinaryService.uploadFile(video);
-            trade.setVideoUrl(videoUrl);
+        if (entryVideo != null && !entryVideo.isEmpty()) {
+            String entryVideoUrl = cloudinaryService.uploadFile(entryVideo);
+            trade.setEntryVideoUrl(entryVideoUrl);
+        }
+
+        if (exitVideo != null && !exitVideo.isEmpty()) {
+            String exitVideoUrl = cloudinaryService.uploadFile(exitVideo);
+            trade.setExitVideoUrl(exitVideoUrl);
         }
 
         boolean savedTrade = tradeService.saveTrade(trade);

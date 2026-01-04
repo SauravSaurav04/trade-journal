@@ -268,9 +268,14 @@ document.querySelector("form").addEventListener("submit", async (e) => {
             formDataToSend.append("exitChartScreenshot", exitFile);
         }
 
-        const videoFile = document.getElementById("video").files[0];
-        if (videoFile) {
-            formDataToSend.append("video", videoFile);
+        const entryVideoFile = document.getElementById("entryVideo").files[0];
+        if (entryVideoFile) {
+            formDataToSend.append("entryVideo", entryVideoFile);
+        }
+
+        const exitVideoFile = document.getElementById("exitVideo").files[0];
+        if (exitVideoFile) {
+            formDataToSend.append("exitVideo", exitVideoFile);
         }
 
         const response = await fetch("/trades", {

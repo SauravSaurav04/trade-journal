@@ -62,6 +62,8 @@ public class Trade {
 
     private String entryChartUrl;
     private String exitChartUrl;
-    private String videoUrl;
+
+    private String entryVideoUrl;
+    private String exitVideoUrl;
 
 }

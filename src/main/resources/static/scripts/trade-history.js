@@ -197,7 +197,7 @@ document.addEventListener("DOMContentLoaded", () => {
         modalCalculatedRisk.textContent = trade.calculatedRisk;
         modalEmotionDiscipline.textContent = trade.emotionDiscipline;
 
-        // Charts
+        // Charts & Videos
         const chartsContainer = document.getElementById("modal-charts-container");
         chartsContainer.innerHTML = ""; // Clear previous
 
@@ -223,13 +223,36 @@ document.addEventListener("DOMContentLoaded", () => {
             hasCharts = true;
         }
 
-        if (trade.videoUrl) {
+        if (trade.entryVideoUrl) {
             const btn = document.createElement("a");
-            btn.href = trade.videoUrl;
+            btn.href = trade.entryVideoUrl;
             btn.target = "_blank";
             btn.className = "chart-btn";
-            btn.textContent = "View Video";
-            // Optional: style it differently using style property or a new class
+            btn.textContent = "View Entry Video";
+
+            btn.style.borderColor = "#007bff";
+            btn.style.color = "#007bff";
+
+            btn.onmouseover = function () {
+                this.style.backgroundColor = "#007bff";
+                this.style.color = "white";
+            };
+            btn.onmouseout = function () {
+                this.style.backgroundColor = "transparent";
+                this.style.color = "#007bff";
+            };
+
+            chartsContainer.appendChild(btn);
+            hasCharts = true;
+        }
+
+        if (trade.exitVideoUrl) {
+            const btn = document.createElement("a");
+            btn.href = trade.exitVideoUrl;
+            btn.target = "_blank";
+            btn.className = "chart-btn";
+            btn.textContent = "View Exit Video";
+
             btn.style.borderColor = "#007bff";
             btn.style.color = "#007bff";
 
