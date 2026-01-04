@@ -229,19 +229,6 @@ document.addEventListener("DOMContentLoaded", () => {
             btn.target = "_blank";
             btn.className = "chart-btn";
             btn.textContent = "View Entry Video";
-
-            btn.style.borderColor = "#007bff";
-            btn.style.color = "#007bff";
-
-            btn.onmouseover = function () {
-                this.style.backgroundColor = "#007bff";
-                this.style.color = "white";
-            };
-            btn.onmouseout = function () {
-                this.style.backgroundColor = "transparent";
-                this.style.color = "#007bff";
-            };
-
             chartsContainer.appendChild(btn);
             hasCharts = true;
         }
@@ -252,19 +239,6 @@ document.addEventListener("DOMContentLoaded", () => {
             btn.target = "_blank";
             btn.className = "chart-btn";
             btn.textContent = "View Exit Video";
-
-            btn.style.borderColor = "#007bff";
-            btn.style.color = "#007bff";
-
-            btn.onmouseover = function () {
-                this.style.backgroundColor = "#007bff";
-                this.style.color = "white";
-            };
-            btn.onmouseout = function () {
-                this.style.backgroundColor = "transparent";
-                this.style.color = "#007bff";
-            };
-
             chartsContainer.appendChild(btn);
             hasCharts = true;
         }
