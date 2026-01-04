@@ -197,6 +197,36 @@ document.addEventListener("DOMContentLoaded", () => {
         modalCalculatedRisk.textContent = trade.calculatedRisk;
         modalEmotionDiscipline.textContent = trade.emotionDiscipline;
 
+        // Charts
+        const chartsContainer = document.getElementById("modal-charts-container");
+        chartsContainer.innerHTML = ""; // Clear previous
+
+        let hasCharts = false;
+
+        if (trade.entryChartUrl) {
+            const btn = document.createElement("a");
+            btn.href = trade.entryChartUrl;
+            btn.target = "_blank";
+            btn.className = "chart-btn";
+            btn.textContent = "View Entry Chart";
+            chartsContainer.appendChild(btn);
+            hasCharts = true;
+        }
+
+        if (trade.exitChartUrl) {
+            const btn = document.createElement("a");
+            btn.href = trade.exitChartUrl;
+            btn.target = "_blank";
+            btn.className = "chart-btn";
+            btn.textContent = "View Exit Chart";
+            chartsContainer.appendChild(btn);
+            hasCharts = true;
+        }
+
+        if (!hasCharts) {
+            chartsContainer.innerHTML = "<p style='color: #888; font-style: italic;'>No charts uploaded.</p>";
+        }
+
         // Use flex to display considering our CSS change
         modal.style.display = "flex";
         document.body.style.overflow = "hidden"; // Lock background scroll

@@ -290,3 +290,29 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* Charts Section */
+.modal-charts {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.chart-btn {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: transparent;
+    color: #00a86b;
+    border: 2px solid #00a86b;
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.95em;
+}
+
+.chart-btn:hover {
+    background-color: #00a86b;
+    color: white;
+}
