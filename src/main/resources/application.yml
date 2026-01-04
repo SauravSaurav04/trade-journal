@@ -17,6 +17,11 @@ spring:
     init:
       mode: always
 
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+
 api:
   key: febb5121dca74bab969fbba598985f8d
 

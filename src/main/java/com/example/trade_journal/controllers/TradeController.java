@@ -25,7 +25,8 @@ public class TradeController {
     @ResponseBody
     public ResponseEntity<?> saveTrade(@RequestPart("data") Trade trade,
                                        @RequestPart(value = "entryChartScreenshot", required = false) MultipartFile entryChartScreenshot,
-                                       @RequestPart(value = "exitChartScreenshot", required = false) MultipartFile exitChartScreenshot) {
+                                       @RequestPart(value = "exitChartScreenshot", required = false) MultipartFile exitChartScreenshot,
+                                       @RequestPart(value = "video", required = false) MultipartFile video) {
 
         if (entryChartScreenshot != null && !entryChartScreenshot.isEmpty()) {
             String entryUrl = cloudinaryService.uploadFile(entryChartScreenshot);
@@ -37,6 +38,11 @@ public class TradeController {
             trade.setExitChartUrl(exitUrl);
         }
 
+        if (video != null && !video.isEmpty()) {
+            String videoUrl = cloudinaryService.uploadFile(video);
+            trade.setVideoUrl(videoUrl);
+        }
+
         boolean savedTrade = tradeService.saveTrade(trade);
         if (savedTrade) {
             return ResponseEntity.ok("Trade saved");
@@ -46,9 +52,10 @@ public class TradeController {
     }
 
     @GetMapping("/getAllTrades")
-    public List<Trade> getAllTrades(@RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-                                    @RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
-                                    @RequestParam(value = "sort", defaultValue = "desc") String sort) {
+    public List<Trade> getAllTrades(
+            @RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+            @RequestParam(value = "sort", defaultValue = "desc") String sort) {
         if (startDate != null && endDate != null) {
             return tradeService.getAllTrades(startDate, endDate, sort);
         } else {

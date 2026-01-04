@@ -223,8 +223,31 @@ document.addEventListener("DOMContentLoaded", () => {
             hasCharts = true;
         }
 
+        if (trade.videoUrl) {
+            const btn = document.createElement("a");
+            btn.href = trade.videoUrl;
+            btn.target = "_blank";
+            btn.className = "chart-btn";
+            btn.textContent = "View Video";
+            // Optional: style it differently using style property or a new class
+            btn.style.borderColor = "#007bff";
+            btn.style.color = "#007bff";
+
+            btn.onmouseover = function () {
+                this.style.backgroundColor = "#007bff";
+                this.style.color = "white";
+            };
+            btn.onmouseout = function () {
+                this.style.backgroundColor = "transparent";
+                this.style.color = "#007bff";
+            };
+
+            chartsContainer.appendChild(btn);
+            hasCharts = true;
+        }
+
         if (!hasCharts) {
-            chartsContainer.innerHTML = "<p style='color: #888; font-style: italic;'>No charts uploaded.</p>";
+            chartsContainer.innerHTML = "<p style='color: #888; font-style: italic;'>No charts or video uploaded.</p>";
         }
 
         // Use flex to display considering our CSS change
