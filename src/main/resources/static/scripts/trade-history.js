@@ -197,16 +197,21 @@ document.addEventListener("DOMContentLoaded", () => {
         modalCalculatedRisk.textContent = trade.calculatedRisk;
         modalEmotionDiscipline.textContent = trade.emotionDiscipline;
 
-        modal.style.display = "block";
+        // Use flex to display considering our CSS change
+        modal.style.display = "flex";
+        document.body.style.overflow = "hidden"; // Lock background scroll
     }
 
-    closeBtn.addEventListener("click", () => {
+    function closeModal() {
         modal.style.display = "none";
-    });
+        document.body.style.overflow = "auto"; // Unlock background scroll
+    }
+
+    closeBtn.addEventListener("click", closeModal);
 
     window.addEventListener("click", (event) => {
         if (event.target === modal) {
-            modal.style.display = "none";
+            closeModal();
         }
     });
 
