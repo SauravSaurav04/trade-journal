@@ -29,12 +29,12 @@
         <form action="/trades" method="POST" class="trade-form" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="tradeDate">Date of Trade <span class="text-red">*</span></label>
-                <input type="date" id="tradeDate" name="tradeDate" required />
+                <input type="date" id="tradeDate" name="tradeDate" />
             </div>
 
             <div class="form-group">
                 <label for="instrument">Instrument Name <span class="text-red">*</span></label>
-                <input type="hidden" id="instrument" name="instrument" required>
+                <input type="hidden" id="instrument" name="instrument">
                 <div class="selection-group" data-input-id="instrument">
                     <button type="button" class="option-btn" data-value="Gold">Gold</button>
                     <button type="button" class="option-btn" data-value="CrudeOil">Crude Oil</button>
@@ -51,12 +51,12 @@
                     <button type="button" class="option-btn" data-value="Other" data-toggle="other">Other</button>
                 </div>
                 <input type="text" id="otherInstrument" name="otherInstrument" placeholder="Enter instrument name"
-                    required class="other-input" />
+                    class="other-input" />
             </div>
 
             <div class="form-group">
                 <label for="tradeType">Trade Type <span class="text-red">*</span></label>
-                <input type="hidden" id="tradeType" name="tradeType" required>
+                <input type="hidden" id="tradeType" name="tradeType">
                 <div class="selection-group" data-input-id="tradeType">
                     <button type="button" class="option-btn" data-value="BUY">Buy</button>
                     <button type="button" class="option-btn" data-value="SELL">Sell</button>
@@ -65,7 +65,7 @@
 
             <div class="form-group">
                 <label for="quantity">Quantity <span class="text-red">*</span></label>
-                <input type="hidden" id="quantity" name="quantity" required>
+                <input type="hidden" id="quantity" name="quantity">
                 <div class="selection-group" data-input-id="quantity">
                     <button type="button" class="option-btn" data-value="0.1">0.1</button>
                     <button type="button" class="option-btn" data-value="0.15">0.15</button>
@@ -79,12 +79,12 @@
                     <button type="button" class="option-btn" data-value="Other" data-toggle="other">Other</button>
                 </div>
                 <input type="number" step="0.01" id="otherQuantity" name="otherQuantity" placeholder="Enter quantity"
-                    required class="other-input" />
+                    class="other-input" />
             </div>
 
             <div class="form-group">
                 <label for="risk">Risk <span class="text-red">*</span></label>
-                <input type="hidden" id="risk" name="risk" required>
+                <input type="hidden" id="risk" name="risk">
                 <div class="selection-group" data-input-id="risk">
                     <button type="button" class="option-btn" data-value="50">50</button>
                     <button type="button" class="option-btn" data-value="100">100</button>
@@ -97,12 +97,12 @@
                     <button type="button" class="option-btn" data-value="1000">1000</button>
                     <button type="button" class="option-btn" data-value="Other" data-toggle="other">Other</button>
                 </div>
-                <input type="number" step="0.01" id="otherRisk" name="otherRisk" placeholder="Enter risk" required
+                <input type="number" step="0.01" id="otherRisk" name="otherRisk" placeholder="Enter risk"
                     class="other-input" />
             </div>
 
             <div class="form-group">
-                <label for="reward">Reward </label>
+                <label for="reward">Reward</label>
                 <input type="hidden" id="reward" name="reward">
                 <div class="selection-group" data-input-id="reward">
                     <button type="button" class="option-btn" data-value="50">50</button>
@@ -150,12 +150,12 @@
 
             <div class="form-group">
                 <label for="pnl">Profit/Loss <span class="text-red">*</span></label>
-                <input type="number" id="pnl" name="pnl" step="0.01" required />
+                <input type="number" id="pnl" name="pnl" step="0.01" />
             </div>
 
             <div class="form-group">
                 <label for="emotion">Emotional Status <span class="text-red">*</span></label>
-                <input type="hidden" id="emotion" name="emotion" required>
+                <input type="hidden" id="emotion" name="emotion">
                 <div class="selection-group" data-input-id="emotion">
                     <button type="button" class="option-btn" data-value="Calm">Calm</button>
                     <button type="button" class="option-btn" data-value="Anxious">Anxious</button>
@@ -179,7 +179,7 @@
                 <div class="discipline-item">
                     <span>1) Entered on Setup:</span>
                     <div class="discipline-options">
-                        <label><input type="radio" name="entrySetup" value="1" required> Yes</label>
+                        <label><input type="radio" name="entrySetup" value="1"> Yes</label>
                         <label><input type="radio" name="entrySetup" value="-1"> No</label>
                     </div>
                 </div>
@@ -187,7 +187,7 @@
                 <div class="discipline-item">
                     <span>2) Fixed Stop Loss:</span>
                     <div class="discipline-options">
-                        <label><input type="radio" name="exitDiscipline" value="1" required> Yes</label>
+                        <label><input type="radio" name="exitDiscipline" value="1"> Yes</label>
                         <label><input type="radio" name="exitDiscipline" value="-1"> No</label>
                     </div>
                 </div>
@@ -195,7 +195,7 @@
                 <div class="discipline-item">
                     <span>3) Calculated Quantity:</span>
                     <div class="discipline-options">
-                        <label><input type="radio" name="correctQuantity" value="1" required> Yes</label>
+                        <label><input type="radio" name="correctQuantity" value="1"> Yes</label>
                         <label><input type="radio" name="correctQuantity" value="-1"> No</label>
                     </div>
                 </div>
@@ -203,7 +203,7 @@
                 <div class="discipline-item">
                     <span>4) Calculated Risk:</span>
                     <div class="discipline-options">
-                        <label><input type="radio" name="calculatedRisk" value="1" required> Yes</label>
+                        <label><input type="radio" name="calculatedRisk" value="1"> Yes</label>
                         <label><input type="radio" name="calculatedRisk" value="-1"> No</label>
                     </div>
                 </div>
@@ -211,7 +211,7 @@
                 <div class="discipline-item">
                     <span>5) Emotion Controlled:</span>
                     <div class="discipline-options">
-                        <label><input type="radio" name="emotionDiscipline" value="1" required> Yes</label>
+                        <label><input type="radio" name="emotionDiscipline" value="1"> Yes</label>
                         <label><input type="radio" name="emotionDiscipline" value="-1"> No</label>
                     </div>
                 </div>
@@ -243,7 +243,10 @@
                 <textarea id="notes" name="notes" rows="4" placeholder="Any other observations?"></textarea>
             </div>
 
-            <button type="submit" class="submit-button" id="saveTradeButton">Save Trade</button>
+            <div style="display: flex; justify-content: center; gap: 10px;">
+                <button type="button" class="submit-button" id="saveDraftButton">Save as Draft</button>
+                <button type="submit" class="submit-button" id="saveTradeButton">Save Trade</button>
+            </div>
         </form>
     </section>
 

@@ -9,7 +9,16 @@ import java.util.List;
 
 @Repository
 public interface TradeRepository extends JpaRepository<Trade, Long> {
-    List<Trade> findByUserEmail(String userEmail);
 
-    List<Trade> findByUserEmailAndTradeDateBetween(String userEmail, LocalDate startDate, LocalDate endDate);
+    List<Trade> findByUserEmailAndStatusOrderByIdDesc(String userEmail, String status);
+
+    List<Trade> findByUserEmailAndStatusAndTradeDateBetweenOrderByIdDesc(String userEmail, String status,
+                                                                         LocalDate startDate,
+                                                                         LocalDate endDate);
+
+    List<Trade> findByUserEmailAndStatusOrderByIdAsc(String userEmail, String status);
+
+    List<Trade> findByUserEmailAndStatusAndTradeDateBetweenOrderByIdAsc(String userEmail, String status,
+                                                                        LocalDate startDate,
+                                                                        LocalDate endDate);
 }

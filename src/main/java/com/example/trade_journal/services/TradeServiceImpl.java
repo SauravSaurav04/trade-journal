@@ -41,18 +41,34 @@ public class TradeServiceImpl implements TradeService {
     }
 
     @Override
-    public List<Trade> getAllTrades() {
+    public List<Trade> getAllTrades(String sort) {
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        return tradeRepository.findByUserEmail(userEmail);
+        if ("asc".equalsIgnoreCase(sort)) {
+            return tradeRepository.findByUserEmailAndStatusOrderByIdAsc(userEmail, "PUBLISHED");
+        } else {
+            return tradeRepository.findByUserEmailAndStatusOrderByIdDesc(userEmail, "PUBLISHED");
+        }
     }
 
     @Override
-    public List<Trade> getAllTrades(LocalDate startDate, LocalDate endDate) {
+    public List<Trade> getAllTrades(LocalDate startDate, LocalDate endDate, String sort) {
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         if (startDate != null && endDate != null) {
-            return tradeRepository.findByUserEmailAndTradeDateBetween(userEmail, startDate, endDate);
+            if ("asc".equalsIgnoreCase(sort)) {
+                return tradeRepository.findByUserEmailAndStatusAndTradeDateBetweenOrderByIdAsc(userEmail, "PUBLISHED",
+                        startDate, endDate);
+            } else {
+                return tradeRepository.findByUserEmailAndStatusAndTradeDateBetweenOrderByIdDesc(userEmail, "PUBLISHED",
+                        startDate, endDate);
+            }
         } else {
-            return tradeRepository.findByUserEmail(userEmail);
+            return getAllTrades(sort);
         }
+    }
+
+    @Override
+    public List<Trade> getDraftTrades() {
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        return tradeRepository.findByUserEmailAndStatusOrderByIdDesc(userEmail, "DRAFT");
     }
 }

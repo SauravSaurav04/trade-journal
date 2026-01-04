@@ -45,9 +45,7 @@
                             <th><span class="sortable">Type</span></th>
                             <th><span class="sortable">Qty</span></th>
                             <th><span class="sortable">Risk</span></th>
-                            <th><span class="sortable">Reward</span></th>
-                            <th><span class="sortable">Strategy</span></th>
-                            <th><span class="sortable">Emotion</span></th>
+                            <th><span class="sortable">R:R</span></th>
                             <th><span class="sortable">Discipline</span></th>
                             <th><span class="sortable">P/L</span></th>
                         </tr>
@@ -57,6 +55,78 @@
                 </table>
             </div>
         </section>
+
+        <!-- TRADE DETAILS MODAL -->
+        <div id="trade-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h3>Trade Details</h3>
+                <div class="modal-body">
+                    <!-- SECTION 1: KEY STATS -->
+                    <div class="modal-section-title">Key Stats</div>
+                    <div class="modal-grid-3">
+                        <div class="modal-field">
+                            <strong>Strategy:</strong>
+                            <p id="modal-strategy"></p>
+                        </div>
+                        <div class="modal-field">
+                            <strong>Reward:</strong>
+                            <p id="modal-reward"></p>
+                        </div>
+                        <div class="modal-field">
+                            <strong>Emotional Status:</strong>
+                            <p id="modal-emotion"></p>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 2: ANALYSIS -->
+                    <div class="modal-section-title">Analysis</div>
+                    <div class="modal-grid-2">
+                        <div class="modal-field">
+                            <strong>Entry Reason:</strong>
+                            <p id="modal-entry-reason"></p>
+                        </div>
+                        <div class="modal-field">
+                            <strong>Exit Reason:</strong>
+                            <p id="modal-exit-reason"></p>
+                        </div>
+                        <div class="modal-field">
+                            <strong>Mistakes Made:</strong>
+                            <p id="modal-mistakes"></p>
+                        </div>
+                        <div class="modal-field">
+                            <strong>Additional Notes:</strong>
+                            <p id="modal-notes"></p>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 3: DISCIPLINE CHECKLIST -->
+                    <div class="modal-section-title">Discipline Breakdown</div>
+                    <div class="discipline-grid">
+                        <div class="discipline-item">
+                            <span class="label">Entered on Setup:</span>
+                            <span id="modal-entry-setup" class="value"></span>
+                        </div>
+                        <div class="discipline-item">
+                            <span class="label">Fixed Stop Loss:</span>
+                            <span id="modal-exit-discipline" class="value"></span>
+                        </div>
+                        <div class="discipline-item">
+                            <span class="label">Calculated Qty:</span>
+                            <span id="modal-correct-qty" class="value"></span>
+                        </div>
+                        <div class="discipline-item">
+                            <span class="label">Calculated Risk:</span>
+                            <span id="modal-calculated-risk" class="value"></span>
+                        </div>
+                        <div class="discipline-item">
+                            <span class="label">Emotion Controlled:</span>
+                            <span id="modal-emotion-discipline" class="value"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- FOOTER -->
         <div data-include="partials/footer.html"></div>

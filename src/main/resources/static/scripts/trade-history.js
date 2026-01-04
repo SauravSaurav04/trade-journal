@@ -25,6 +25,15 @@ document.addEventListener("DOMContentLoaded", () => {
         trades.forEach((trade, index) => {
             const row = document.createElement("tr");
             const disciplineScore = trade.entrySetup + trade.exitDiscipline + trade.correctQuantity + trade.calculatedRisk + trade.emotionDiscipline;
+            let rrRatio = "0";
+            if (trade.risk !== 0) {
+                const ratio = trade.pnl / trade.risk;
+                rrRatio = `1 : ${ratio.toFixed(1)}`; // Show 1 decimal place
+            }
+
+            row.style.cursor = "pointer";
+            row.addEventListener("click", () => openModal(trade));
+
             row.innerHTML = `
                 <td>${index + 1}</td>
                 <td>${trade.tradeDate}</td>
@@ -32,9 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <td>${trade.tradeType}</td>
                 <td>${trade.quantity}</td>
                 <td>${trade.risk}</td>
-                <td>${trade.reward}</td>
-                <td>${trade.strategy}</td>
-                <td>${trade.emotion}</td>
+                <td>${rrRatio}</td>
                 <td>${disciplineScore}</td>
                 <td class="${trade.pnl >= 0 ? 'positive' : 'negative'}">
                     ${trade.pnl >= 0 ? '+' : ''}${trade.pnl.toFixed(2)}
@@ -151,6 +158,61 @@ document.addEventListener("DOMContentLoaded", () => {
             currentSortIndex = idx;
             currentSortDirection = asc;
         });
+    });
+
+    // === Modal Logic ===
+    const modal = document.getElementById("trade-modal");
+    const closeBtn = document.querySelector(".close-btn");
+
+    // Fields
+    const modalStrategy = document.getElementById("modal-strategy");
+    const modalReward = document.getElementById("modal-reward");
+    const modalEmotion = document.getElementById("modal-emotion");
+
+    const modalEntry = document.getElementById("modal-entry-reason");
+    const modalExit = document.getElementById("modal-exit-reason");
+    const modalMistakes = document.getElementById("modal-mistakes");
+    const modalNotes = document.getElementById("modal-notes");
+
+    const modalEntrySetup = document.getElementById("modal-entry-setup");
+    const modalExitDiscipline = document.getElementById("modal-exit-discipline");
+    const modalCorrectQty = document.getElementById("modal-correct-qty");
+    const modalCalculatedRisk = document.getElementById("modal-calculated-risk");
+    const modalEmotionDiscipline = document.getElementById("modal-emotion-discipline");
+
+    function openModal(trade) {
+        modalStrategy.textContent = trade.strategy || "N/A";
+        modalReward.textContent = trade.reward || "N/A";
+        modalEmotion.textContent = trade.emotion || "N/A";
+
+        modalEntry.textContent = trade.entryReason || "N/A";
+        modalExit.textContent = trade.exitReason || "N/A";
+        modalMistakes.textContent = trade.mistakes || "N/A";
+        modalNotes.textContent = trade.notes || "N/A";
+
+        // Discipline
+        modalEntrySetup.textContent = trade.entrySetup;
+        modalExitDiscipline.textContent = trade.exitDiscipline;
+        modalCorrectQty.textContent = trade.correctQuantity;
+        modalCalculatedRisk.textContent = trade.calculatedRisk;
+        modalEmotionDiscipline.textContent = trade.emotionDiscipline;
+
+        // Use flex to display considering our CSS change
+        modal.style.display = "flex";
+        document.body.style.overflow = "hidden"; // Lock background scroll
+    }
+
+    function closeModal() {
+        modal.style.display = "none";
+        document.body.style.overflow = "auto"; // Unlock background scroll
+    }
+
+    closeBtn.addEventListener("click", closeModal);
+
+    window.addEventListener("click", (event) => {
+        if (event.target === modal) {
+            closeModal();
+        }
     });
 
     // Initial load (all trades)

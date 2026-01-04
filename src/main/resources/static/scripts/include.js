@@ -137,11 +137,39 @@ function updateAuthUI() {
         if (loginBtn) loginBtn.style.display = "none";
         if (signupBtn) signupBtn.style.display = "none";
         if (profileBtn) profileBtn.style.display = "inline-block";
+        checkDraftsVisibility();
     } else {
         if (loginBtn) loginBtn.style.display = "inline-block";
         if (signupBtn) signupBtn.style.display = "inline-block";
         if (profileBtn) profileBtn.style.display = "none";
+        const draftsBtn = document.getElementById("draftsNavBtn");
+        if (draftsBtn) draftsBtn.style.display = "none";
     }
+}
+
+function checkDraftsVisibility() {
+    const draftsBtn = document.getElementById("draftsNavBtn");
+    if (!draftsBtn) return;
+
+    fetch("/getDrafts")
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                return [];
+            }
+        })
+        .then(drafts => {
+            if (drafts.length > 0) {
+                draftsBtn.style.display = "inline-block";
+            } else {
+                draftsBtn.style.display = "none";
+            }
+        })
+        .catch(err => {
+            console.error("Error checking drafts:", err);
+            draftsBtn.style.display = "none";
+        });
 }
 
 const ROUTES = {
