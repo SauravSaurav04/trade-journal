@@ -19,3 +19,8 @@ spring:
 
 api:
   key: febb5121dca74bab969fbba598985f8d
+
+cloudinary:
+  cloud-name: dt8n8e3tg
+  api-key: 444974451337952
+  api-secret: YmvMRAw332s6-rYxXYCMHWPgyKc
