@@ -118,8 +118,8 @@
     opacity: 0.8;
 }
 
-/* ==== MODAL STYLES ==== */
-.modal {
+/* ==== TRADE DETAILS MODAL STYLES ==== */
+#trade-modal {
     display: none;
     /* Hidden by default */
     position: fixed;
@@ -139,7 +139,7 @@
     backdrop-filter: blur(4px);
 }
 
-.modal-content {
+#trade-modal .modal-content {
     background-color: #fff;
     /* Removed padding to let scrollbar reach edge */
     padding: 0;
@@ -171,7 +171,7 @@
     }
 }
 
-.modal-content h3 {
+#trade-modal .modal-content h3 {
     margin: 0;
     color: #00a86b;
     border-bottom: 2px solid #f0f0f0;
@@ -181,7 +181,7 @@
     /* Keep header fixed */
 }
 
-.close-btn {
+#trade-modal .close-btn {
     color: #aaa;
     position: absolute;
     /* Position absolute to overlay on header padding */
@@ -194,8 +194,8 @@
     line-height: 1;
 }
 
-.close-btn:hover,
-.close-btn:focus {
+#trade-modal .close-btn:hover,
+#trade-modal .close-btn:focus {
     color: #333;
     text-decoration: none;
 }
