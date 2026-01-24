@@ -3,9 +3,9 @@ spring:
     name: trade-journal
 
   datasource:
-    url: jdbc:postgresql://ep-misty-band-a87iykfw-pooler.eastus2.azure.neon.tech:5432/neondb?sslmode=require
-    username: neondb_owner
-    password: npg_kfvm1Uw9AIto
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=require
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -23,9 +23,9 @@ spring:
       max-request-size: 100MB
 
 api:
-  key: febb5121dca74bab969fbba598985f8d
+  key: ${TWELVEDATA_API_KEY}
 
 cloudinary:
-  cloud-name: dt8n8e3tg
-  api-key: 444974451337952
-  api-secret: YmvMRAw332s6-rYxXYCMHWPgyKc
+  cloud-name: ${CLOUDINARY_CLOUD_NAME}
+  api-key: ${CLOUDINARY_API_KEY}
+  api-secret: ${CLOUDINARY_API_SECRET}
