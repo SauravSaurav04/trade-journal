@@ -1,6 +1,8 @@
 package com.example.trade_journal.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,11 +26,16 @@ public class Trade {
 
     private String userEmail;
 
+    @NotNull(message = "Trade date is required")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tradeDate;
+
+    @NotBlank(message = "Instrument is required")
     private String instrument;
     private String otherInstrument;
+
+    @NotBlank(message = "Trade type is required")
     private String tradeType;
 
     private String quantity;
