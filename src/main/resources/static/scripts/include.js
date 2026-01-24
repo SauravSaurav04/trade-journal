@@ -126,7 +126,9 @@ function logout() {
 }
 
 function updateAuthUI() {
-    getUserDetails();
+    if (!sessionStorage.getItem("userName") || !sessionStorage.getItem("userEmail")) {
+        getUserDetails();
+    }
     const isLoggedIn = sessionStorage.getItem("isLoggedIn") === "true";
 
     const loginBtn = document.getElementById("loginLink");
@@ -335,7 +337,7 @@ function getUserDetails() {
         .then(data => {
             sessionStorage.setItem("userName", data.name);
             sessionStorage.setItem("userEmail", data.email);
-            updateAuthUI();
+//            updateAuthUI();
         })
         .catch(err => {
             console.error("Error fetching user details:", err);
