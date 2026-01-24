@@ -197,6 +197,56 @@ document.addEventListener("DOMContentLoaded", () => {
         modalCalculatedRisk.textContent = trade.calculatedRisk;
         modalEmotionDiscipline.textContent = trade.emotionDiscipline;
 
+        // Charts & Videos
+        const chartsContainer = document.getElementById("modal-charts-container");
+        chartsContainer.innerHTML = ""; // Clear previous
+
+        let hasCharts = false;
+
+        if (trade.entryChartUrl) {
+            const btn = document.createElement("a");
+            btn.href = trade.entryChartUrl;
+            btn.target = "_blank";
+            btn.className = "chart-btn";
+            btn.textContent = "View Entry Chart";
+            chartsContainer.appendChild(btn);
+            hasCharts = true;
+        }
+
+        if (trade.exitChartUrl) {
+            const btn = document.createElement("a");
+            btn.href = trade.exitChartUrl;
+            btn.target = "_blank";
+            btn.className = "chart-btn";
+            btn.textContent = "View Exit Chart";
+            chartsContainer.appendChild(btn);
+            hasCharts = true;
+        }
+
+        if (trade.entryVideoUrl) {
+            const btn = document.createElement("a");
+            btn.href = trade.entryVideoUrl;
+            btn.target = "_blank";
+            btn.className = "chart-btn";
+            btn.textContent = "View Entry Video";
+            chartsContainer.appendChild(btn);
+            hasCharts = true;
+        }
+
+        if (trade.exitVideoUrl) {
+            const btn = document.createElement("a");
+            btn.href = trade.exitVideoUrl;
+            btn.target = "_blank";
+            btn.className = "chart-btn";
+            btn.textContent = "View Exit Video";
+            chartsContainer.appendChild(btn);
+            hasCharts = true;
+        }
+
+        if (!hasCharts) {
+            chartsContainer.innerHTML = "<p style='color: #888; font-style: italic;'>No charts or video uploaded.</p>";
+        }
+
         // Use flex to display considering our CSS change
         modal.style.display = "flex";
         document.body.style.overflow = "hidden"; // Lock background scroll

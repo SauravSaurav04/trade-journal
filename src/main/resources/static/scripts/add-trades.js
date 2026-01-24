@@ -255,10 +255,32 @@ document.querySelector("form").addEventListener("submit", async (e) => {
     }
 
     try {
+        const formDataToSend = new FormData();
+        formDataToSend.append("data", new Blob([JSON.stringify(plainData)], { type: "application/json" }));
+
+        const entryFile = document.getElementById("entryChartScreenshot").files[0];
+        if (entryFile) {
+            formDataToSend.append("entryChartScreenshot", entryFile);
+        }
+
+        const exitFile = document.getElementById("exitChartScreenshot").files[0];
+        if (exitFile) {
+            formDataToSend.append("exitChartScreenshot", exitFile);
+        }
+
+        const entryVideoFile = document.getElementById("entryVideo").files[0];
+        if (entryVideoFile) {
+            formDataToSend.append("entryVideo", entryVideoFile);
+        }
+
+        const exitVideoFile = document.getElementById("exitVideo").files[0];
+        if (exitVideoFile) {
+            formDataToSend.append("exitVideo", exitVideoFile);
+        }
+
         const response = await fetch("/trades", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(plainData)
+            body: formDataToSend
         });
 
         if (response.ok) {

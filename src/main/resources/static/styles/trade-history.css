@@ -141,10 +141,10 @@
 
 .modal-content {
     background-color: #fff;
-    /* Removed margin logic, now handled by flex parent */
-    padding: 25px;
+    /* Removed padding to let scrollbar reach edge */
+    padding: 0;
     border: 1px solid #888;
-    width: 90%;
+    width: 100%;
     max-width: 650px;
     max-height: 90vh;
     /* Prevent it from being taller than screen */
@@ -172,18 +172,21 @@
 }
 
 .modal-content h3 {
-    margin-top: 0;
+    margin: 0;
     color: #00a86b;
     border-bottom: 2px solid #f0f0f0;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
+    padding: 20px 25px 15px;
+    /* Add padding here */
     flex-shrink: 0;
     /* Keep header fixed */
 }
 
 .close-btn {
     color: #aaa;
-    float: right;
+    position: absolute;
+    /* Position absolute to overlay on header padding */
+    right: 20px;
+    top: 15px;
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
@@ -201,11 +204,10 @@
     display: flex;
     flex-direction: column;
     gap: 15px;
-    max-height: 70vh;
-    /* Scroll if content is too tall */
+    /* Remove fixed max-height, let flex handle it */
     overflow-y: auto;
-    padding-right: 5px;
-    /* Space for scrollbar */
+    padding: 10px 25px 25px;
+    /* Add padding here */
 }
 
 .modal-section-title {
@@ -289,4 +291,30 @@
     .modal-grid-2 {
         grid-template-columns: 1fr;
     }
+}
+
+/* Charts Section */
+.modal-charts {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.chart-btn {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: transparent;
+    color: #00a86b;
+    border: 2px solid #00a86b;
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.95em;
+}
+
+.chart-btn:hover {
+    background-color: #00a86b;
+    color: white;
 }
