@@ -27,22 +27,20 @@ public class SecurityConfig {
 
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
         httpSecurity.authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/", "/index.html", "/styles/**", "/scripts/**", "/templates/partials/**", "/register", "/templates/scanner.html", "/scanner")
-                        .permitAll()
-                        .anyRequest()
-                        .authenticated()
-                )
+                .requestMatchers("/", "/index.html", "/styles/**", "/scripts/**", "/images/**",
+                        "/templates/partials/**", "/register", "/templates/scanner.html", "/scanner")
+                .permitAll()
+                .anyRequest()
+                .authenticated())
                 .formLogin(form -> form
                         .loginProcessingUrl("/login")
                         .successHandler(successHandler())
                         .failureHandler(failureHandler())
-                        .permitAll()
-                )
+                        .permitAll())
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/")
-                        .permitAll()
-                );
+                        .permitAll());
         return httpSecurity.build();
     }
 

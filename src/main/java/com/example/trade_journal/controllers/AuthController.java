@@ -2,6 +2,7 @@ package com.example.trade_journal.controllers;
 
 import com.example.trade_journal.models.UserDto;
 import com.example.trade_journal.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +17,7 @@ public class AuthController {
     private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody UserDto userDto) {
         boolean created = userService.register(userDto);
         if (created) {
             return ResponseEntity.ok("User registered successfully");

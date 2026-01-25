@@ -1,10 +1,16 @@
 package com.example.trade_journal.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -20,9 +26,16 @@ public class Trade {
 
     private String userEmail;
 
-    private String tradeDate;
+    @NotNull(message = "Trade date is required")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate tradeDate;
+
+    @NotBlank(message = "Instrument is required")
     private String instrument;
     private String otherInstrument;
+
+    @NotBlank(message = "Trade type is required")
     private String tradeType;
 
     private String quantity;
@@ -51,5 +64,13 @@ public class Trade {
     private Integer emotionDiscipline;
 
     private String notes;
+
+    private String status;
+
+    private String entryChartUrl;
+    private String exitChartUrl;
+
+    private String entryVideoUrl;
+    private String exitVideoUrl;
 
 }

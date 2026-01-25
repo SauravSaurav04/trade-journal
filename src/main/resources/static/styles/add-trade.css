@@ -5,7 +5,7 @@
     margin: 0 auto;
     background-color: white;
     border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .form-section h2 {
@@ -29,6 +29,12 @@
     font-weight: 600;
     margin-bottom: 8px;
     color: #1e1e2f;
+    background-color: rgba(0, 168, 107, 0.1);
+    /* Light green background */
+    padding: 10px;
+    border-radius: 6px;
+    border-left: 4px solid #00a86b;
+    /* Green accent border */
 }
 
 .form-group input,
@@ -86,7 +92,8 @@ input[type="range"]::-webkit-slider-thumb {
     background: #00a86b;
     border-radius: 50%;
     cursor: pointer;
-    margin-top: -5px; /* aligns thumb with track */
+    margin-top: -5px;
+    /* aligns thumb with track */
 }
 
 /* Firefox */
@@ -106,7 +113,7 @@ input[type="range"]::-moz-range-thumb {
 }
 
 /* Optional: Display value next to slider */
-.form-group input[type="range"] + span {
+.form-group input[type="range"]+span {
     margin-left: 10px;
     font-weight: bold;
 }
@@ -117,11 +124,52 @@ input[type="range"]::-moz-range-thumb {
     align-items: center;
 }
 
-.discipline-item label {
-}
-
 .discipline-options {
     display: flex;
     gap: 10px;
     justify-content: flex-start;
+}
+
+/* Button Selection Groups */
+.selection-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.option-btn {
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    color: #333;
+}
+
+.option-btn:hover {
+    background-color: #e0e0e0;
+}
+
+.option-btn.active {
+    background-color: #00a86b;
+    color: white;
+    border-color: #00a86b;
+}
+
+.discipline-score-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.discipline-slider {
+    flex-grow: 1;
+}
+
+/* Styles for "Other" input fields */
+.other-input {
+    display: none;
+    margin-top: 10px;
 }

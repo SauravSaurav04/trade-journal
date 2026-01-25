@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -40,8 +41,34 @@ public class TradeServiceImpl implements TradeService {
     }
 
     @Override
-    public List<Trade> getAllTrades() {
+    public List<Trade> getAllTrades(String sort) {
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        return tradeRepository.findByUserEmail(userEmail);
+        if ("asc".equalsIgnoreCase(sort)) {
+            return tradeRepository.findByUserEmailAndStatusOrderByIdAsc(userEmail, "PUBLISHED");
+        } else {
+            return tradeRepository.findByUserEmailAndStatusOrderByIdDesc(userEmail, "PUBLISHED");
+        }
+    }
+
+    @Override
+    public List<Trade> getAllTrades(LocalDate startDate, LocalDate endDate, String sort) {
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (startDate != null && endDate != null) {
+            if ("asc".equalsIgnoreCase(sort)) {
+                return tradeRepository.findByUserEmailAndStatusAndTradeDateBetweenOrderByIdAsc(userEmail, "PUBLISHED",
+                        startDate, endDate);
+            } else {
+                return tradeRepository.findByUserEmailAndStatusAndTradeDateBetweenOrderByIdDesc(userEmail, "PUBLISHED",
+                        startDate, endDate);
+            }
+        } else {
+            return getAllTrades(sort);
+        }
+    }
+
+    @Override
+    public List<Trade> getDraftTrades() {
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        return tradeRepository.findByUserEmailAndStatusOrderByIdDesc(userEmail, "DRAFT");
     }
 }

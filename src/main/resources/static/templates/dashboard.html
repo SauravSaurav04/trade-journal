@@ -1,92 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard - Trade Tracker</title>
-    <link rel="stylesheet" href="../styles/style.css"/>
-    <link rel="stylesheet" href="../styles/dashboard.css"/>
+    <link rel="stylesheet" href="../styles/style.css" />
+    <link rel="stylesheet" href="../styles/dashboard.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="../scripts/include.js" defer></script>
     <script src="../scripts/dashboard.js" defer></script>
 </head>
+
 <body>
 
-<!-- NAVBAR -->
-<div data-include="partials/navbar.html"></div>
+    <!-- NAVBAR -->
+    <div data-include="partials/navbar.html"></div>
 
-<!-- DASHBOARD SECTION -->
-<section class="dashboard-section">
-    <h2>Dashboard Overview</h2>
-
-    <!-- Stats Summary -->
-    <div class="table-container">
-        <div class="stats-cards">
-            <div class="card">
-                <h3>Total Trades</h3>
-                <p></p>
+    <!-- DASHBOARD SECTION -->
+    <section class="dashboard-section">
+        <h2>Dashboard Overview</h2>
+        <div class="date-range-picker">
+            <div class="date-row">
+                <label for="start-date">From:</label>
+                <input type="date" id="start-date" name="start-date">
+                <label for="end-date">To:</label>
+                <input type="date" id="end-date" name="end-date">
+                <button id="filter-date-btn">Filter</button>
             </div>
-            <div class="card">
-                <h3>Total P/L</h3>
-                <p class="positive"></p>
-            </div>
-            <div class="card">
-                <h3>Win Rate</h3>
-                <p></p>
-            </div>
-            <div class="card">
-                <h3>Avg Risk/Reward</h3>
-                <p></p>
+            <div class="date-row">
+                <button id="btn-today">Today</button>
+                <button id="btn-week">This Week</button>
+                <button id="btn-last-week">Last Week</button>
+                <button id="btn-month">This Month</button>
             </div>
         </div>
-    </div>
-
-    <!-- Charts -->
-    <div class="table-container">
-        <h3>Performance Insights</h3>
-
-        <!-- First row: 3 cards -->
-        <div class="chart-grid chart-row">
-            <div class="chart-box">
-                <h4>Win vs Loss</h4>
-                <canvas id="winLossChart"></canvas>
-            </div>
-
-            <div class="chart-box">
-                <h4>Trade Type (Buy/Sell)</h4>
-                <canvas id="tradeTypeChart"></canvas>
-            </div>
-
-            <div class="chart-box">
-                <h4>Emotions & Discipline</h4>
-                <canvas id="emotionDisciplineChart"></canvas>
-            </div>
-        </div>
-
-        <!-- Second row: 1 wide chart -->
-        <div class="chart-grid single-chart-row">
-            <div class="chart-box full-width">
-                <h4>P/L Over Time</h4>
-                <canvas id="profitChart"></canvas>
-            </div>
-        </div>
-
-        <!-- Calendar Profit/Loss View -->
         <div class="table-container">
-            <h3>P/L Calendar View</h3>
-            <div class="calendar-header-bar">
-                <button id="calendar-prev" style="margin-left:22.5%">&lt;</button>
-                <h3 id="calendar-month-title"></h3>
-                <button id="calendar-next" style="margin-right:22.5%">&gt;</button>
+            <div class="stats-cards">
+                <div class="card">
+                    <h3>Total Trades</h3>
+                    <p></p>
+                </div>
+                <div class="card">
+                    <h3>Total P/L</h3>
+                    <p class="positive"></p>
+                </div>
+                <div class="card">
+                    <h3>Win Rate</h3>
+                    <p></p>
+                </div>
+                <div class="card">
+                    <h3>Avg Risk/Reward</h3>
+                    <p></p>
+                </div>
             </div>
-            <div id="calendar" class="calendar-container"></div>
         </div>
 
-    </div>
-</section>
+        <div class="table-container">
+            <h3>Performance Insights</h3>
 
-<!-- FOOTER -->
-<div data-include="partials/footer.html"></div>
+            <div class="chart-grid chart-row">
+                <div class="chart-box">
+                    <h4>Win vs Loss</h4>
+                    <canvas id="winLossChart"></canvas>
+                </div>
+
+                <div class="chart-box">
+                    <h4>Trade Type (Buy/Sell)</h4>
+                    <canvas id="tradeTypeChart"></canvas>
+                </div>
+
+                <div class="chart-box">
+                    <h4>Discipline Score</h4>
+                    <canvas id="emotionDisciplineChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-grid single-chart-row">
+                <div class="chart-box full-width">
+                    <h4>P/L Over Time</h4>
+                    <canvas id="profitChart"></canvas>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <h3>P/L Calendar View</h3>
+                <div class="calendar-header-bar">
+                    <button id="calendar-prev">&lt;</button>
+                    <h3 id="calendar-month-title"></h3>
+                    <button id="calendar-next">&gt;</button>
+                </div>
+                <div id="calendar" class="calendar-container"></div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <div data-include="partials/footer.html"></div>
 
 </body>
+
 </html>

@@ -46,7 +46,7 @@
     background-color: #fff;
     padding: 1rem;
     border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .chart-box h4 {
@@ -60,7 +60,11 @@ canvas {
     height: 300px !important;
 }
 
-/* Add to styles/dashboard.css */
+#profitChart {
+    height: 500px !important;
+}
+
+
 
 .chart-row {
     display: flex;
@@ -104,6 +108,7 @@ canvas {
     font-size: 16px;
     border-radius: 4px;
     transition: background-color 0.2s;
+    margin: 0 22.5%;
 }
 
 #calendar-prev:hover,
@@ -143,6 +148,12 @@ canvas {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.calendar-day:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .profit {
