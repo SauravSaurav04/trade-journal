@@ -195,34 +195,34 @@ function submitSignup() {
     }
 
     if (password.length < 8) {
-        alert("Password must be at least 8 characters long.");
-        resetSignupButton();
+        showToast("Password must be at least 8 characters long", "error");
+        setButtonLoading('signupButton', false, 'Sign Up');
         return;
     }
     if (!/[A-Z]/.test(password)) {
-        alert("Password must include at least one uppercase letter.");
-        resetSignupButton();
+        showToast("Password must include at least one uppercase letter", "error");
+        setButtonLoading('signupButton', false, 'Sign Up');
         return;
     }
     if (!/[a-z]/.test(password)) {
-        alert("Password must include at least one lowercase letter.");
-        resetSignupButton();
+        showToast("Password must include at least one lowercase letter", "error");
+        setButtonLoading('signupButton', false, 'Sign Up');
         return;
     }
     if (!/\d/.test(password)) {
-        alert("Password must include at least one number.");
-        resetSignupButton();
+        showToast("Password must include at least one number", "error");
+        setButtonLoading('signupButton', false, 'Sign Up');
         return;
     }
     if (!/[@$!%*?&]/.test(password)) {
-        alert("Password must include at least one special character (e.g., @$!%*?&).");
-        resetSignupButton();
+        showToast("Password must include at least one special character (e.g., @$!%*?&)", "error");
+        setButtonLoading('signupButton', false, 'Sign Up');
         return;
     }
 
     if (password !== confirmPassword) {
-        alert("Passwords do not match.");
-        resetSignupButton();
+        showToast("Passwords do not match", "error");
+        setButtonLoading('signupButton', false, 'Sign Up');
         return;
     }
 

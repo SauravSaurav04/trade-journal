@@ -3,6 +3,7 @@ package com.example.trade_journal.controllers;
 import com.example.trade_journal.entities.Trade;
 import com.example.trade_journal.services.CloudinaryService;
 import com.example.trade_journal.services.TradeService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class TradeController {
 
     @PostMapping(value = "/trades", consumes = {"multipart/form-data"})
     @ResponseBody
-    public ResponseEntity<?> saveTrade(@RequestPart("data") Trade trade,
+    public ResponseEntity<?> saveTrade(@Valid @RequestPart("data") Trade trade,
                                        @RequestPart(value = "entryChartScreenshot", required = false) MultipartFile entryChartScreenshot,
                                        @RequestPart(value = "exitChartScreenshot", required = false) MultipartFile exitChartScreenshot,
                                        @RequestPart(value = "entryVideo", required = false) MultipartFile entryVideo,
