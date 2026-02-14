@@ -604,43 +604,62 @@ body {
     z-index: 10000;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    max-width: 500px;
+    gap: 12px;
+    max-width: 420px;
 }
 
 .toast {
-    min-width: 300px;
-    max-width: 500px;
-    background: white;
+    min-width: 320px;
+    max-width: 420px;
+    background: #ffffff;
     padding: 16px 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
     display: flex;
     align-items: center;
-    gap: 12px;
-    animation: slideIn 0.3s ease;
-    border-left: 4px solid #00a86b;
+    gap: 14px;
+    animation: slideIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    border: 1px solid #e0e0e0;
+    position: relative;
+    overflow: hidden;
 }
 
-.toast.error {
-    border-left-color: #dc3545;
+/* Accent bar on the left */
+.toast::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    background: #00a86b;
+    /* Application green */
 }
 
-.toast.warning {
-    border-left-color: #ffc107;
+.toast.error::before {
+    background: #00a86b;
+    /* Application green for consistency */
 }
 
-.toast.info {
-    border-left-color: #17a2b8;
+.toast.warning::before {
+    background: #00a86b;
+    /* Application green for consistency */
 }
 
-.toast.success {
-    border-left-color: #28a745;
+.toast.info::before {
+    background: #00a86b;
+    /* Application green */
+}
+
+.toast.success::before {
+    background: #00a86b;
+    /* Application green */
 }
 
 .toast-icon {
-    font-size: 24px;
+    font-size: 26px;
     flex-shrink: 0;
+    line-height: 1;
 }
 
 .toast.error .toast-icon::before {
@@ -661,26 +680,30 @@ body {
 
 .toast-message {
     flex: 1;
-    color: #333;
+    color: #1e1e2f;
     font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
 }
 
 .toast-close {
     cursor: pointer;
     color: #999;
-    font-size: 20px;
+    font-size: 22px;
     font-weight: bold;
     line-height: 1;
-    padding: 0 5px;
+    padding: 0 6px;
+    transition: color 0.2s ease;
+    align-self: flex-start;
 }
 
 .toast-close:hover {
-    color: #333;
+    color: #1e1e2f;
 }
 
 @keyframes slideIn {
     from {
-        transform: translateX(400px);
+        transform: translateX(450px);
         opacity: 0;
     }
 
@@ -692,7 +715,7 @@ body {
 
 @keyframes slideOut {
     to {
-        transform: translateX(400px);
+        transform: translateX(450px);
         opacity: 0;
     }
 }
