@@ -165,7 +165,7 @@ document.querySelector("form").addEventListener("submit", async (e) => {
     if (!isDraft) {
         // Helper to alert and focus/scroll
         const alertAndFocus = (msg, elementId, isSelectionGroup = false) => {
-            alert(msg);
+            showToast(msg, 'error');
             if (isSelectionGroup) {
                 const group = document.querySelector(`.selection-group[data-input-id="${elementId}"]`);
                 if (group) group.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -231,7 +231,7 @@ document.querySelector("form").addEventListener("submit", async (e) => {
 
         for (const field of disciplineFields) {
             if (!document.querySelector(`input[name="${field.name}"]:checked`)) {
-                alert(`Please select YES or NO for: ${field.label}`);
+                showToast(`Please select YES or NO for: ${field.label}`, 'error');
                 const item = document.querySelector(`input[name="${field.name}"]`).closest('.discipline-item');
                 if (item) item.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 return;
@@ -284,17 +284,17 @@ document.querySelector("form").addEventListener("submit", async (e) => {
         });
 
         if (response.ok) {
-            alert(isDraft ? "Trade Saved as Draft!" : "Trade Saved!");
+            showToast(isDraft ? "Trade Saved as Draft!" : "Trade Saved!", 'success');
             location.href = isDraft ? "/templates/drafts.html" : "/templates/trade-history.html";
         } else {
             const errorText = await response.text();
-            alert("Error saving trade: " + errorText);
+            showToast("Error saving trade: " + errorText, 'error');
             submitButton.disabled = false;
             submitButton.textContent = isDraft ? "Save as Draft" : "Save Trade";
         }
     } catch (error) {
         console.error("Request failed:", error);
-        alert("An error occurred.");
+        showToast("An error occurred", 'error');
         submitButton.disabled = false;
         submitButton.textContent = isDraft ? "Save as Draft" : "Save Trade";
     }
