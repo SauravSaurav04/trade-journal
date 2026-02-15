@@ -1,5 +1,5 @@
 function updateDisciplineScore() {
-    const names = ["entrySetup", "exitDiscipline", "correctQuantity", "calculatedRisk", "emotionDiscipline"];
+    const names = ["enteredOnSetup", "fixedStopLoss", "calculatedQuantity", "calculatedRisk", "emotionalControlled"];
     let score = 0;
 
     names.forEach(name => {
@@ -144,11 +144,11 @@ async function loadDraftDetails(id) {
                 if (trade.emotion) selectButton("emotion", trade.emotion);
 
                 // Radios
-                if (trade.entrySetup) document.querySelector(`input[name="entrySetup"][value="${trade.entrySetup}"]`).checked = true;
-                if (trade.exitDiscipline) document.querySelector(`input[name="exitDiscipline"][value="${trade.exitDiscipline}"]`).checked = true;
-                if (trade.correctQuantity) document.querySelector(`input[name="correctQuantity"][value="${trade.correctQuantity}"]`).checked = true;
+                if (trade.enteredOnSetup) document.querySelector(`input[name="enteredOnSetup"][value="${trade.enteredOnSetup}"]`).checked = true;
+                if (trade.fixedStopLoss) document.querySelector(`input[name="fixedStopLoss"][value="${trade.fixedStopLoss}"]`).checked = true;
+                if (trade.calculatedQuantity) document.querySelector(`input[name="calculatedQuantity"][value="${trade.calculatedQuantity}"]`).checked = true;
                 if (trade.calculatedRisk) document.querySelector(`input[name="calculatedRisk"][value="${trade.calculatedRisk}"]`).checked = true;
-                if (trade.emotionDiscipline) document.querySelector(`input[name="emotionDiscipline"][value="${trade.emotionDiscipline}"]`).checked = true;
+                if (trade.emotionalControlled) document.querySelector(`input[name="emotionalControlled"][value="${trade.emotionalControlled}"]`).checked = true;
 
                 updateDisciplineScore();
             }
@@ -222,11 +222,11 @@ document.querySelector("form").addEventListener("submit", async (e) => {
 
         // 8. Discipline Checklist
         const disciplineFields = [
-            { name: "entrySetup", label: "Entered on Setup" },
-            { name: "exitDiscipline", label: "Fixed Stop Loss" },
-            { name: "correctQuantity", label: "Calculated Quantity" },
+            { name: "enteredOnSetup", label: "Entered on Setup" },
+            { name: "fixedStopLoss", label: "Fixed Stop Loss" },
+            { name: "calculatedQuantity", label: "Calculated Quantity" },
             { name: "calculatedRisk", label: "Calculated Risk" },
-            { name: "emotionDiscipline", label: "Emotion Controlled" }
+            { name: "emotionalControlled", label: "Emotion Controlled" }
         ];
 
         for (const field of disciplineFields) {
