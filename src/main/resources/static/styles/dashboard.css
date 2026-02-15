@@ -167,3 +167,35 @@ canvas {
     font-weight: bold;
     font-size: 13px;
 }
+
+/* === Download Report Button === */
+.download-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.download-btn {
+    background-color: #00a86b;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 32px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.1s ease;
+    box-shadow: 0 3px 8px rgba(0, 168, 107, 0.2);
+}
+
+.download-btn:hover {
+    background-color: #008f5a;
+    box-shadow: 0 5px 15px rgba(0, 168, 107, 0.3);
+    transform: translateY(-1px);
+}
+
+.download-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(0, 168, 107, 0.2);
+}
