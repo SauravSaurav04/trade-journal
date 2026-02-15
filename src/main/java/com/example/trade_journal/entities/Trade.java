@@ -82,17 +82,20 @@ public class Trade {
     @NotNull(message = "Entry setup score is required")
     @Min(value = -1, message = "Entry setup score must be -1 or 1")
     @Max(value = 1, message = "Entry setup score must be -1 or 1")
-    private Integer entrySetup;
+    @Column(name = "entry_setup")
+    private Integer enteredOnSetup;
 
     @NotNull(message = "Exit discipline score is required")
     @Min(value = -1, message = "Exit discipline score must be -1 or 1")
     @Max(value = 1, message = "Exit discipline score must be -1 or 1")
-    private Integer exitDiscipline;
+    @Column(name = "exit_discipline")
+    private Integer fixedStopLoss;
 
     @NotNull(message = "Correct quantity score is required")
     @Min(value = -1, message = "Correct quantity score must be -1 or 1")
     @Max(value = 1, message = "Correct quantity score must be -1 or 1")
-    private Integer correctQuantity;
+    @Column(name = "correct_quantity")
+    private Integer calculatedQuantity;
 
     @NotNull(message = "Calculated risk score is required")
     @Min(value = -1, message = "Calculated risk score must be -1 or 1")
@@ -102,7 +105,8 @@ public class Trade {
     @NotNull(message = "Emotion discipline score is required")
     @Min(value = -1, message = "Emotion discipline score must be -1 or 1")
     @Max(value = 1, message = "Emotion discipline score must be -1 or 1")
-    private Integer emotionDiscipline;
+    @Column(name = "emotion_discipline")
+    private Integer emotionalControlled;
 
     @Size(max = 2000, message = "Notes must not exceed 2000 characters")
     private String notes;
