@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
         tableBody.innerHTML = "";
         trades.forEach((trade, index) => {
             const row = document.createElement("tr");
-            const disciplineScore = trade.entrySetup + trade.exitDiscipline + trade.correctQuantity + trade.calculatedRisk + trade.emotionDiscipline;
+            const disciplineScore = trade.enteredOnSetup + trade.fixedStopLoss + trade.calculatedQuantity + trade.calculatedRisk + trade.emotionalControlled;
             let rrRatio = "0";
             if (trade.risk !== 0) {
                 const ratio = trade.pnl / trade.risk;
@@ -191,11 +191,11 @@ document.addEventListener("DOMContentLoaded", () => {
         modalNotes.textContent = trade.notes || "N/A";
 
         // Discipline
-        modalEntrySetup.textContent = trade.entrySetup;
-        modalExitDiscipline.textContent = trade.exitDiscipline;
-        modalCorrectQty.textContent = trade.correctQuantity;
+        modalEntrySetup.textContent = trade.enteredOnSetup;
+        modalExitDiscipline.textContent = trade.fixedStopLoss;
+        modalCorrectQty.textContent = trade.calculatedQuantity;
         modalCalculatedRisk.textContent = trade.calculatedRisk;
-        modalEmotionDiscipline.textContent = trade.emotionDiscipline;
+        modalEmotionDiscipline.textContent = trade.emotionalControlled;
 
         // Charts & Videos
         const chartsContainer = document.getElementById("modal-charts-container");

@@ -179,24 +179,24 @@
                 <div class="discipline-item">
                     <span>1) Entered on Setup:</span>
                     <div class="discipline-options">
-                        <label><input type="radio" name="entrySetup" value="1"> Yes</label>
-                        <label><input type="radio" name="entrySetup" value="-1"> No</label>
+                        <label><input type="radio" name="enteredOnSetup" value="1"> Yes</label>
+                        <label><input type="radio" name="enteredOnSetup" value="-1"> No</label>
                     </div>
                 </div>
 
                 <div class="discipline-item">
                     <span>2) Fixed Stop Loss:</span>
                     <div class="discipline-options">
-                        <label><input type="radio" name="exitDiscipline" value="1"> Yes</label>
-                        <label><input type="radio" name="exitDiscipline" value="-1"> No</label>
+                        <label><input type="radio" name="fixedStopLoss" value="1"> Yes</label>
+                        <label><input type="radio" name="fixedStopLoss" value="-1"> No</label>
                     </div>
                 </div>
 
                 <div class="discipline-item">
                     <span>3) Calculated Quantity:</span>
                     <div class="discipline-options">
-                        <label><input type="radio" name="correctQuantity" value="1"> Yes</label>
-                        <label><input type="radio" name="correctQuantity" value="-1"> No</label>
+                        <label><input type="radio" name="calculatedQuantity" value="1"> Yes</label>
+                        <label><input type="radio" name="calculatedQuantity" value="-1"> No</label>
                     </div>
                 </div>
 
@@ -211,8 +211,8 @@
                 <div class="discipline-item">
                     <span>5) Emotion Controlled:</span>
                     <div class="discipline-options">
-                        <label><input type="radio" name="emotionDiscipline" value="1"> Yes</label>
-                        <label><input type="radio" name="emotionDiscipline" value="-1"> No</label>
+                        <label><input type="radio" name="emotionalControlled" value="1"> Yes</label>
+                        <label><input type="radio" name="emotionalControlled" value="-1"> No</label>
                     </div>
                 </div>
                 <br>
@@ -262,6 +262,14 @@
 
     <!-- FOOTER -->
     <div data-include="partials/footer.html"></div>
+
+    <!-- Global Loading Spinner -->
+    <div id="globalSpinner" class="spinner-overlay">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div id="toastContainer" class="toast-container"></div>
 
 </body>
 

@@ -11,6 +11,7 @@ function includeHTML() {
             })
             .then(data => {
                 el.innerHTML = data;
+                el.classList.add('loaded'); // Mark as loaded to remove skeleton
                 updateAuthUI();
                 addLoginEnterKeyListener();
                 addSignupEnterKeyListener();
@@ -78,12 +79,8 @@ function navigateIfLoggedIn(targetUrl) {
 function submitLogin() {
     const email = document.getElementById("loginEmail").value;
     const password = document.getElementById("loginPassword").value;
-    const loginButton = document.getElementById("loginButton");
 
-    if (loginButton) {
-        loginButton.disabled = true;
-        loginButton.textContent = "Logging in...";
-    }
+    setButtonLoading('loginButton', true, 'Logging in');
 
     fetch("/login", {
         method: "POST",
@@ -98,22 +95,20 @@ function submitLogin() {
                 updateAuthUI();
                 const redirectUrl = sessionStorage.getItem("redirectAfterLogin") || "/";
                 sessionStorage.removeItem("redirectAfterLogin");
+                showSpinner(); // Show spinner during redirect
                 window.location.href = redirectUrl;
             } else if (response.status === 401) {
-                alert("Invalid email or password.");
+                showToast("Invalid email or password", "error");
             } else {
-                alert("Something went wrong during login.");
+                showToast("Something went wrong during login", "error");
             }
         })
         .catch(err => {
             console.error("Login error:", err);
-            alert("Something went wrong.");
+            showToast("Something went wrong", "error");
         })
         .finally(() => {
-            if (loginButton) {
-                loginButton.disabled = false;
-                loginButton.textContent = "Login";
-            }
+            setButtonLoading('loginButton', false, 'Login');
         });
 }
 
@@ -185,54 +180,49 @@ function submitSignup() {
     const email = document.getElementById("signupEmail").value.trim();
     const password = document.getElementById("signupPassword").value;
     const confirmPassword = document.getElementById("signupConfirm").value;
-    const signupButton = document.getElementById("signupButton");
-
-    if (signupButton) {
-        signupButton.disabled = true;
-        signupButton.textContent = "Signing up...";
-    }
+    setButtonLoading('signupButton', true, 'Signing up');
 
     if (!name || !email || !password || !confirmPassword) {
-        alert("Please fill in all fields.");
-        resetSignupButton();
+        showToast("Please fill in all fields", "error");
+        setButtonLoading('signupButton', false, 'Sign Up');
         return;
     }
 
     if (!email.endsWith("@gmail.com")) {
-        alert("Email must end with '@gmail.com'.");
-        resetSignupButton();
+        showToast("Email must end with '@gmail.com'", "error");
+        setButtonLoading('signupButton', false, 'Sign Up');
         return;
     }
 
     if (password.length < 8) {
-        alert("Password must be at least 8 characters long.");
-        resetSignupButton();
+        showToast("Password must be at least 8 characters long", "error");
+        setButtonLoading('signupButton', false, 'Sign Up');
         return;
     }
     if (!/[A-Z]/.test(password)) {
-        alert("Password must include at least one uppercase letter.");
-        resetSignupButton();
+        showToast("Password must include at least one uppercase letter", "error");
+        setButtonLoading('signupButton', false, 'Sign Up');
         return;
     }
     if (!/[a-z]/.test(password)) {
-        alert("Password must include at least one lowercase letter.");
-        resetSignupButton();
+        showToast("Password must include at least one lowercase letter", "error");
+        setButtonLoading('signupButton', false, 'Sign Up');
         return;
     }
     if (!/\d/.test(password)) {
-        alert("Password must include at least one number.");
-        resetSignupButton();
+        showToast("Password must include at least one number", "error");
+        setButtonLoading('signupButton', false, 'Sign Up');
         return;
     }
     if (!/[@$!%*?&]/.test(password)) {
-        alert("Password must include at least one special character (e.g., @$!%*?&).");
-        resetSignupButton();
+        showToast("Password must include at least one special character (e.g., @$!%*?&)", "error");
+        setButtonLoading('signupButton', false, 'Sign Up');
         return;
     }
 
     if (password !== confirmPassword) {
-        alert("Passwords do not match.");
-        resetSignupButton();
+        showToast("Passwords do not match", "error");
+        setButtonLoading('signupButton', false, 'Sign Up');
         return;
     }
 
@@ -249,20 +239,20 @@ function submitSignup() {
     })
         .then(response => {
             if (response.ok) {
-                alert("Registration successful! Please log in.");
+                showToast("Registration successful! Please log in", "success");
                 switchModal("signupModal", "loginModal");
             } else if (response.status === 409) {
-                alert("A user with this email already exists.");
+                showToast("A user with this email already exists", "error");
             } else {
-                alert("Registration failed. Please try again.");
+                showToast("Registration failed. Please try again", "error");
             }
         })
         .catch(err => {
             console.error("Error during signup:", err);
-            alert("Something went wrong. Please try again.");
+            showToast("Something went wrong. Please try again", "error");
         })
         .finally(() => {
-            resetSignupButton();
+            setButtonLoading('signupButton', false, 'Sign Up');
         });
 }
 
@@ -337,9 +327,62 @@ function getUserDetails() {
         .then(data => {
             sessionStorage.setItem("userName", data.name);
             sessionStorage.setItem("userEmail", data.email);
-//            updateAuthUI();
+            //            updateAuthUI();
         })
         .catch(err => {
             console.error("Error fetching user details:", err);
         });
+}
+
+// ========== UTILITY FUNCTIONS ==========
+
+// Show/hide global spinner
+function showSpinner() {
+    const spinner = document.getElementById('globalSpinner');
+    if (spinner) spinner.classList.add('active');
+}
+
+function hideSpinner() {
+    const spinner = document.getElementById('globalSpinner');
+    if (spinner) spinner.classList.remove('active');
+}
+
+// Show inline button loader
+function setButtonLoading(buttonId, loading, originalText = 'Submit') {
+    const button = document.getElementById(buttonId);
+    if (!button) return;
+
+    if (loading) {
+        button.disabled = true;
+        button.dataset.originalText = button.innerHTML; // Store original text
+        button.innerHTML = originalText + ' <span class="btn-loader"></span>';
+    } else {
+        button.disabled = false;
+        button.innerHTML = button.dataset.originalText || originalText;
+    }
+}
+
+// Toast notification system
+function showToast(message, type = 'info', duration = 4000) {
+    const container = document.getElementById('toastContainer');
+    if (!container) {
+        console.warn('Toast container not found');
+        return;
+    }
+
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.innerHTML = `
+        <div class="toast-icon"></div>
+        <div class="toast-message">${message}</div>
+        <div class="toast-close" onclick="this.parentElement.remove()">×</div>
+    `;
+
+    container.appendChild(toast);
+
+    // Auto-remove after duration
+    setTimeout(() => {
+        toast.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+    }, duration);
 }

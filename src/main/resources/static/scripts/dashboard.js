@@ -48,11 +48,11 @@ document.addEventListener("DOMContentLoaded", async function () {
         const sellCount = trades.filter(t => t.tradeType.toLowerCase() === "sell").length;
 
         const emotions = {
-            entrySetup: avg(trades.map(t => t.entrySetup || 0)),
-            exitDiscipline: avg(trades.map(t => t.exitDiscipline || 0)),
-            correctQuantity: avg(trades.map(t => t.correctQuantity || 0)),
+            enteredOnSetup: avg(trades.map(t => t.enteredOnSetup || 0)),
+            fixedStopLoss: avg(trades.map(t => t.fixedStopLoss || 0)),
+            calculatedQuantity: avg(trades.map(t => t.calculatedQuantity || 0)),
             calculatedRisk: avg(trades.map(t => t.calculatedRisk || 0)),
-            emotionDiscipline: avg(trades.map(t => t.emotionDiscipline || 0))
+            emotionalControlled: avg(trades.map(t => t.emotionalControlled || 0))
         };
 
         const labels = trades.map(t => new Date(t.tradeDate).toLocaleDateString());
@@ -253,11 +253,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         let totalPositivePoints = 0;
         trades.forEach(t => {
-            totalPositivePoints += (t.entrySetup);
-            totalPositivePoints += (t.exitDiscipline);
-            totalPositivePoints += (t.correctQuantity);
+            totalPositivePoints += (t.enteredOnSetup);
+            totalPositivePoints += (t.fixedStopLoss);
+            totalPositivePoints += (t.calculatedQuantity);
             totalPositivePoints += (t.calculatedRisk);
-            totalPositivePoints += (t.emotionDiscipline);
+            totalPositivePoints += (t.emotionalControlled);
         });
 
         const disciplinePercentage = totalPossiblePoints > 0
@@ -266,11 +266,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         // Count trades that followed ALL 5 rules vs trades that didn't
         const tradesFollowedAllRules = trades.filter(t =>
-            t.entrySetup > 0 &&
-            t.exitDiscipline > 0 &&
-            t.correctQuantity > 0 &&
+            t.enteredOnSetup > 0 &&
+            t.fixedStopLoss > 0 &&
+            t.calculatedQuantity > 0 &&
             t.calculatedRisk > 0 &&
-            t.emotionDiscipline > 0
+            t.emotionalControlled > 0
         ).length;
 
         const tradesNotFollowedAllRules = totalTrades - tradesFollowedAllRules;
@@ -358,11 +358,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // === Helper: Calculate discipline score ===
     function calculateDiscipline(trade) {
-        return (trade.entrySetup || 0) +
-            (trade.exitDiscipline || 0) +
-            (trade.correctQuantity || 0) +
+        return (trade.enteredOnSetup || 0) +
+            (trade.fixedStopLoss || 0) +
+            (trade.calculatedQuantity || 0) +
             (trade.calculatedRisk || 0) +
-            (trade.emotionDiscipline || 0);
+            (trade.emotionalControlled || 0);
     }
 
     // === Helper: Format local date string ===
@@ -423,11 +423,11 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
 
             // Check if all 5 rules were followed
-            const allRulesFollowed = t.entrySetup > 0 &&
-                t.exitDiscipline > 0 &&
-                t.correctQuantity > 0 &&
+            const allRulesFollowed = t.enteredOnSetup > 0 &&
+                t.fixedStopLoss > 0 &&
+                t.calculatedQuantity > 0 &&
                 t.calculatedRisk > 0 &&
-                t.emotionDiscipline > 0;
+                t.emotionalControlled > 0;
 
             if (allRulesFollowed) {
                 tradeMap[key].followedAllRules += 1;
@@ -572,6 +572,105 @@ document.addEventListener("DOMContentLoaded", async function () {
         document.getElementById('end-date').value = endStr;
         loadTrades(startStr, endStr);
     });
+
+    // === CSV Download Functionality ===
+    function downloadCSV() {
+        const trades = tradeDataGlobal;
+
+        if (!trades || trades.length === 0) {
+            alert('No data available to download. Please adjust your filters or add trades.');
+            return;
+        }
+
+        // CSV Headers
+        const headers = [
+            'Trade Date',
+            'Instrument',
+            'Trade Type',
+            'Quantity',
+            'Risk',
+            'Reward',
+            'Strategy',
+            'P/L',
+            'Emotion',
+            'Entry Reason',
+            'Exit Reason',
+            'Mistakes',
+            'Notes',
+            'Entered On Setup',
+            'Fixed Stop Loss',
+            'Calculated Quantity',
+            'Calculated Risk',
+            'Emotional Controlled',
+            'Total Discipline Score'
+        ];
+
+        // Helper function to escape CSV values
+        const escapeCSV = (value) => {
+            if (value === null || value === undefined) return '';
+            const stringValue = String(value);
+            // Escape double quotes and wrap in quotes if contains comma, newline, or quote
+            if (stringValue.includes(',') || stringValue.includes('"') || stringValue.includes('\n') || stringValue.includes('\r')) {
+                return '"' + stringValue.replace(/"/g, '""') + '"';
+            }
+            return stringValue;
+        };
+
+        // Build CSV content
+        let csvContent = headers.join(',') + '\n';
+
+        trades.forEach(trade => {
+            const disciplineScore = calculateDiscipline(trade);
+            const row = [
+                escapeCSV(trade.tradeDate),
+                escapeCSV(trade.instrument),
+                escapeCSV(trade.tradeType),
+                escapeCSV(trade.quantity),
+                escapeCSV(trade.risk),
+                escapeCSV(trade.reward || ''),
+                escapeCSV(trade.strategy || ''),
+                escapeCSV(trade.pnl),
+                escapeCSV(trade.emotion),
+                escapeCSV(trade.entryReason || ''),
+                escapeCSV(trade.exitReason || ''),
+                escapeCSV(trade.mistakes || ''),
+                escapeCSV(trade.notes || ''),
+                escapeCSV(trade.enteredOnSetup),
+                escapeCSV(trade.fixedStopLoss),
+                escapeCSV(trade.calculatedQuantity),
+                escapeCSV(trade.calculatedRisk),
+                escapeCSV(trade.emotionalControlled),
+                escapeCSV(disciplineScore)
+            ];
+            csvContent += row.join(',') + '\n';
+        });
+
+        // Create download link and trigger download
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+
+        // Generate filename with current date and time
+        const now = new Date();
+        const dateStr = now.getFullYear() + '-' +
+            String(now.getMonth() + 1).padStart(2, '0') + '-' +
+            String(now.getDate()).padStart(2, '0');
+        const timeStr = String(now.getHours()).padStart(2, '0') +
+            String(now.getMinutes()).padStart(2, '0') +
+            String(now.getSeconds()).padStart(2, '0');
+        const filename = `dashboard-report-${dateStr}-${timeStr}.csv`;
+
+        link.setAttribute('href', url);
+        link.setAttribute('download', filename);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    }
+
+    // Download button event listener
+    document.getElementById('download-report-btn').addEventListener('click', downloadCSV);
 
     // Initial load (all trades)
     loadTrades();
