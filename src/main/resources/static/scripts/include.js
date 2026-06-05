@@ -64,7 +64,16 @@ window.onclick = function (event) {
 }
 
 function isAuthenticated() {
-    return sessionStorage.getItem("isLoggedIn") === "true";
+    return !!sessionStorage.getItem("jwtToken");
+}
+
+function authFetch(url, options = {}) {
+    const token = sessionStorage.getItem("jwtToken");
+    const headers = Object.assign({}, options.headers || {});
+    if (token) {
+        headers["Authorization"] = "Bearer " + token;
+    }
+    return fetch(url, Object.assign({}, options, { headers }));
 }
 
 function navigateIfLoggedIn(targetUrl) {
@@ -85,18 +94,20 @@ function submitLogin() {
     fetch("/login", {
         method: "POST",
         headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
+            "Content-Type": "application/json",
         },
-        body: `username=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+        body: JSON.stringify({ email: email, password: password })
     })
         .then(response => {
-            if (response.status === 200 || response.redirected) {
-                sessionStorage.setItem("isLoggedIn", "true");
-                updateAuthUI();
-                const redirectUrl = sessionStorage.getItem("redirectAfterLogin") || "/";
-                sessionStorage.removeItem("redirectAfterLogin");
-                showSpinner(); // Show spinner during redirect
-                window.location.href = redirectUrl;
+            if (response.ok) {
+                return response.json().then(data => {
+                    sessionStorage.setItem("jwtToken", data.token);
+                    updateAuthUI();
+                    const redirectUrl = sessionStorage.getItem("redirectAfterLogin") || "/";
+                    sessionStorage.removeItem("redirectAfterLogin");
+                    showSpinner();
+                    window.location.href = redirectUrl;
+                });
             } else if (response.status === 401) {
                 showToast("Invalid email or password", "error");
             } else {
@@ -113,18 +124,18 @@ function submitLogin() {
 }
 
 function logout() {
-    fetch("/logout", { method: "POST" }).then(() => {
-        sessionStorage.removeItem("isLoggedIn");
-        updateAuthUI();
-        window.location.href = "/";
-    });
+    sessionStorage.removeItem("jwtToken");
+    sessionStorage.removeItem("userName");
+    sessionStorage.removeItem("userEmail");
+    updateAuthUI();
+    window.location.href = "/";
 }
 
 function updateAuthUI() {
-    if (!sessionStorage.getItem("userName") || !sessionStorage.getItem("userEmail")) {
+    if (isAuthenticated() && (!sessionStorage.getItem("userName") || !sessionStorage.getItem("userEmail"))) {
         getUserDetails();
     }
-    const isLoggedIn = sessionStorage.getItem("isLoggedIn") === "true";
+    const isLoggedIn = isAuthenticated();
 
     const loginBtn = document.getElementById("loginLink");
     const signupBtn = document.getElementById("signupLink");
@@ -148,7 +159,7 @@ function checkDraftsVisibility() {
     const draftsBtn = document.getElementById("draftsNavBtn");
     if (!draftsBtn) return;
 
-    fetch("/getDrafts")
+    authFetch("/getDrafts")
         .then(response => {
             if (response.ok) {
                 return response.json();
@@ -311,7 +322,7 @@ function addSignupEnterKeyListener() {
 }
 
 function getUserDetails() {
-    fetch("/getUserDetails", {
+    authFetch("/getUserDetails", {
         method: "GET",
         headers: {
             "Content-Type": "application/json"

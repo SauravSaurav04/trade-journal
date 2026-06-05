@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function loadDraftDetails(id) {
     try {
-        const response = await fetch('/getDrafts');
+        const response = await authFetch('/getDrafts');
         if (response.ok) {
             const drafts = await response.json();
             const trade = drafts.find(t => t.id == id);
@@ -278,7 +278,7 @@ document.querySelector("form").addEventListener("submit", async (e) => {
             formDataToSend.append("exitVideo", exitVideoFile);
         }
 
-        const response = await fetch("/trades", {
+        const response = await authFetch("/trades", {
             method: "POST",
             body: formDataToSend
         });

@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (startDate && endDate) {
             url += `&startDate=${startDate}&endDate=${endDate}`;
         }
-        const response = await fetch(url);
+        const response = await authFetch(url);
         const trades = await response.json();
         tradeDataGlobal = trades; // Store filtered data for charts
 

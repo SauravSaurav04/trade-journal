@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
             url += `?startDate=${startDate}&endDate=${endDate}`;
         }
         try {
-            const response = await fetch(url);
+            const response = await authFetch(url);
             const trades = await response.json();
             renderTrades(trades);
         } catch (err) {

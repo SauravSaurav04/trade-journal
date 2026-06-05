@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function fetchDrafts() {
     try {
-        const response = await fetch("/getDrafts");
+        const response = await authFetch("/getDrafts");
         if (response.ok) {
             const drafts = await response.json();
             renderTable(drafts);
