@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.springframework.cache.annotation.Cacheable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +16,7 @@ public class ScannerServiceImpl implements ScannerService {
     TwelveDataClient twelveDataClient;
 
     @Override
+    @Cacheable(value = "scannerResults", key = "#interval + '_' + #threshold + '_' + #ema")
     public List<String> scanStocks(String interval, double threshold, int ema) {
         List<String> nearEmaStocks = new ArrayList<>();
         List<String> symbols = List.of("XAU/USD", "BTC/USD", "USD/CAD", "USD/JPY");

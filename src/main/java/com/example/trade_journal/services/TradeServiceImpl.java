@@ -6,6 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -16,6 +20,10 @@ public class TradeServiceImpl implements TradeService {
     TradeRepository tradeRepository;
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(value = "trades", allEntries = true),
+            @CacheEvict(value = "trade", key = "T(org.springframework.security.core.context.SecurityContextHolder).getContext().getAuthentication().getName() + '_' + #trade.id", condition = "#trade.id != null")
+    })
     public boolean saveTrade(Trade trade) {
 
         if (trade.getInstrument().equals("Other")) {
@@ -65,6 +73,7 @@ public class TradeServiceImpl implements TradeService {
     }
 
     @Override
+    @Cacheable(value = "trades", key = "T(org.springframework.security.core.context.SecurityContextHolder).getContext().getAuthentication().getName() + '_' + #sort")
     public List<Trade> getAllTrades(String sort) {
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         if ("asc".equalsIgnoreCase(sort)) {
@@ -75,6 +84,7 @@ public class TradeServiceImpl implements TradeService {
     }
 
     @Override
+    @Cacheable(value = "trades", key = "T(org.springframework.security.core.context.SecurityContextHolder).getContext().getAuthentication().getName() + '_' + #startDate + '_' + #endDate + '_' + #sort")
     public List<Trade> getAllTrades(LocalDate startDate, LocalDate endDate, String sort) {
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         if (startDate != null && endDate != null) {
@@ -91,12 +101,14 @@ public class TradeServiceImpl implements TradeService {
     }
 
     @Override
+    @Cacheable(value = "trades", key = "T(org.springframework.security.core.context.SecurityContextHolder).getContext().getAuthentication().getName() + '_drafts'")
     public List<Trade> getDraftTrades() {
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         return tradeRepository.findByUserEmailAndStatusOrderByIdDesc(userEmail, "DRAFT");
     }
 
     @Override
+    @Cacheable(value = "trade", key = "T(org.springframework.security.core.context.SecurityContextHolder).getContext().getAuthentication().getName() + '_' + #id")
     public Trade getTradeById(Long id) {
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         Trade trade = tradeRepository.findById(id)
