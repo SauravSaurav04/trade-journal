@@ -73,4 +73,10 @@ public class TradeController {
     public List<Trade> getDraftTrades() {
         return tradeService.getDraftTrades();
     }
+
+    @GetMapping("/trades/{id}")
+    public ResponseEntity<Trade> getTradeById(@PathVariable("id") Long id) {
+        Trade trade = tradeService.getTradeById(id);
+        return ResponseEntity.ok(trade);
+    }
 }

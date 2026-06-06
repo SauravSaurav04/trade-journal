@@ -23,21 +23,9 @@ let isDraft = false;
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    // Check if we are editing a draft
+    // Check if we are editing a trade (either draft or published)
     if (tradeId) {
-        document.querySelector("h2").innerText = "Complete Trade";
-        // Fetch trade details
-        // Note: Ideally we should have an endpoint to get single trade by ID.
-        // For now, we rely on the user filling it again or we implementation fetch logic if GET /trades/{id} exists.
-        // Assuming we need to implement fetching:
-        // fetch(`/trades/${tradeId}`).then... 
-        // Since the prompt didn't explicitly ask for backend GET /trades/{id}, 
-        // I'll stick to just handling the submit logic for now unless requested.
-        // Wait, the prompt said: "Add logic on page load to check if ?id=... exists... fetch that specific trade and pre-fill".
-        // Use existing GET APIs? We have getAllTrades and getDrafts. 
-        // We can fetch from getDrafts and find the one with matching ID.
-
-        loadDraftDetails(tradeId);
+        loadTradeDetails(tradeId);
     }
 
     // 1. Radio buttons for Discipline Score
@@ -102,13 +90,24 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-async function loadDraftDetails(id) {
+async function loadTradeDetails(id) {
     try {
-        const response = await authFetch('/getDrafts');
+        const response = await authFetch(`/trades/${id}`);
         if (response.ok) {
-            const drafts = await response.json();
-            const trade = drafts.find(t => t.id == id);
+            const trade = await response.json();
             if (trade) {
+                // Adjust title and buttons depending on status
+                if (trade.status === "PUBLISHED") {
+                    document.querySelector("h2").innerText = "Edit Trade";
+                    const saveTradeBtn = document.getElementById("saveTradeButton");
+                    if (saveTradeBtn) saveTradeBtn.textContent = "Save Changes";
+                    
+                    const saveDraftBtn = document.getElementById("saveDraftButton");
+                    if (saveDraftBtn) saveDraftBtn.style.display = "none";
+                } else {
+                    document.querySelector("h2").innerText = "Complete Trade";
+                }
+
                 // Pre-fill form
                 document.getElementById("tradeDate").value = trade.tradeDate;
                 document.getElementById("pnl").value = trade.pnl;
@@ -144,17 +143,36 @@ async function loadDraftDetails(id) {
                 if (trade.emotion) selectButton("emotion", trade.emotion);
 
                 // Radios
-                if (trade.enteredOnSetup) document.querySelector(`input[name="enteredOnSetup"][value="${trade.enteredOnSetup}"]`).checked = true;
-                if (trade.fixedStopLoss) document.querySelector(`input[name="fixedStopLoss"][value="${trade.fixedStopLoss}"]`).checked = true;
-                if (trade.calculatedQuantity) document.querySelector(`input[name="calculatedQuantity"][value="${trade.calculatedQuantity}"]`).checked = true;
-                if (trade.calculatedRisk) document.querySelector(`input[name="calculatedRisk"][value="${trade.calculatedRisk}"]`).checked = true;
-                if (trade.emotionalControlled) document.querySelector(`input[name="emotionalControlled"][value="${trade.emotionalControlled}"]`).checked = true;
+                if (trade.enteredOnSetup !== null && trade.enteredOnSetup !== undefined) {
+                    const radio = document.querySelector(`input[name="enteredOnSetup"][value="${trade.enteredOnSetup}"]`);
+                    if (radio) radio.checked = true;
+                }
+                if (trade.fixedStopLoss !== null && trade.fixedStopLoss !== undefined) {
+                    const radio = document.querySelector(`input[name="fixedStopLoss"][value="${trade.fixedStopLoss}"]`);
+                    if (radio) radio.checked = true;
+                }
+                if (trade.calculatedQuantity !== null && trade.calculatedQuantity !== undefined) {
+                    const radio = document.querySelector(`input[name="calculatedQuantity"][value="${trade.calculatedQuantity}"]`);
+                    if (radio) radio.checked = true;
+                }
+                if (trade.calculatedRisk !== null && trade.calculatedRisk !== undefined) {
+                    const radio = document.querySelector(`input[name="calculatedRisk"][value="${trade.calculatedRisk}"]`);
+                    if (radio) radio.checked = true;
+                }
+                if (trade.emotionalControlled !== null && trade.emotionalControlled !== undefined) {
+                    const radio = document.querySelector(`input[name="emotionalControlled"][value="${trade.emotionalControlled}"]`);
+                    if (radio) radio.checked = true;
+                }
 
                 updateDisciplineScore();
             }
+        } else {
+            console.error("Failed to fetch trade details with ID:", id);
+            showToast("Failed to load trade details", "error");
         }
     } catch (e) {
-        console.error("Error loading draft details", e);
+        console.error("Error loading trade details", e);
+        showToast("Error loading trade details", "error");
     }
 }
 
@@ -284,18 +302,22 @@ document.querySelector("form").addEventListener("submit", async (e) => {
         });
 
         if (response.ok) {
-            showToast(isDraft ? "Trade Saved as Draft!" : "Trade Saved!", 'success');
+            let successMsg = isDraft ? "Trade Saved as Draft!" : "Trade Saved!";
+            if (tradeId && !isDraft) {
+                successMsg = "Trade Updated!";
+            }
+            showToast(successMsg, 'success');
             location.href = isDraft ? "/templates/drafts.html" : "/templates/trade-history.html";
         } else {
             const errorText = await response.text();
             showToast("Error saving trade: " + errorText, 'error');
             submitButton.disabled = false;
-            submitButton.textContent = isDraft ? "Save as Draft" : "Save Trade";
+            submitButton.textContent = isDraft ? "Save as Draft" : (tradeId ? "Save Changes" : "Save Trade");
         }
     } catch (error) {
         console.error("Request failed:", error);
         showToast("An error occurred", 'error');
         submitButton.disabled = false;
-        submitButton.textContent = isDraft ? "Save as Draft" : "Save Trade";
+        submitButton.textContent = isDraft ? "Save as Draft" : (tradeId ? "Save Changes" : "Save Trade");
     }
 });

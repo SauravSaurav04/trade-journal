@@ -35,6 +35,30 @@ public class TradeServiceImpl implements TradeService {
         }
 
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        if (trade.getId() != null) {
+            Trade existingTrade = tradeRepository.findById(trade.getId())
+                    .orElseThrow(() -> new com.example.trade_journal.exception.ResourceNotFoundException("Trade", trade.getId()));
+
+            if (!existingTrade.getUserEmail().equals(userEmail)) {
+                throw new com.example.trade_journal.exception.ValidationException("You do not have permission to modify this trade");
+            }
+
+            // Merge media URLs if they are not provided in the update request
+            if (trade.getEntryChartUrl() == null) {
+                trade.setEntryChartUrl(existingTrade.getEntryChartUrl());
+            }
+            if (trade.getExitChartUrl() == null) {
+                trade.setExitChartUrl(existingTrade.getExitChartUrl());
+            }
+            if (trade.getEntryVideoUrl() == null) {
+                trade.setEntryVideoUrl(existingTrade.getEntryVideoUrl());
+            }
+            if (trade.getExitVideoUrl() == null) {
+                trade.setExitVideoUrl(existingTrade.getExitVideoUrl());
+            }
+        }
+
         trade.setUserEmail(userEmail);
         tradeRepository.save(trade);
         return true;
@@ -70,5 +94,17 @@ public class TradeServiceImpl implements TradeService {
     public List<Trade> getDraftTrades() {
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         return tradeRepository.findByUserEmailAndStatusOrderByIdDesc(userEmail, "DRAFT");
+    }
+
+    @Override
+    public Trade getTradeById(Long id) {
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        Trade trade = tradeRepository.findById(id)
+                .orElseThrow(() -> new com.example.trade_journal.exception.ResourceNotFoundException("Trade", id));
+
+        if (!trade.getUserEmail().equals(userEmail)) {
+            throw new com.example.trade_journal.exception.ValidationException("You do not have permission to view this trade");
+        }
+        return trade;
     }
 }

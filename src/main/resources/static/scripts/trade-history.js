@@ -197,6 +197,16 @@ document.addEventListener("DOMContentLoaded", () => {
         modalCalculatedRisk.textContent = trade.calculatedRisk;
         modalEmotionDiscipline.textContent = trade.emotionalControlled;
 
+        // Wire edit button
+        const editBtn = document.getElementById("modal-edit-btn");
+        if (editBtn) {
+            editBtn.style.display = "inline-block";
+            editBtn.onclick = (e) => {
+                e.stopPropagation();
+                window.location.href = `/templates/add-trade.html?id=${trade.id}`;
+            };
+        }
+
         // Charts & Videos
         const chartsContainer = document.getElementById("modal-charts-container");
         chartsContainer.innerHTML = ""; // Clear previous

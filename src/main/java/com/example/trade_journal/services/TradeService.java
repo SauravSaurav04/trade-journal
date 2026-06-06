@@ -14,4 +14,6 @@ public interface TradeService {
     List<Trade> getAllTrades(LocalDate startDate, LocalDate endDate, String sort);
 
     List<Trade> getDraftTrades();
+
+    Trade getTradeById(Long id);
 }
